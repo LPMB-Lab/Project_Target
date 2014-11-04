@@ -1,0 +1,8 @@
+enum State
+{
+	IDLE,
+	FINGER_TRACKING,
+	IN_TRIAL,
+	COMPLETED,
+	COUNTDOWN
+};
