@@ -48,15 +48,11 @@ public class Trial
 		
 		if (step == 19)
 		{
-			for (int i = 0; i < m_aTimers.length; i++)
+			m_iFastestTime = m_aTimers[0];
+			for (int i = 1; i < m_aTimers.length; i++)
 			{
-				if (i == 0)
+				if (m_aTimers[i] < m_iFastestTime)
 					m_iFastestTime = m_aTimers[i];
-				else
-				{
-					if (m_aTimers[i] < m_iFastestTime)
-						m_iFastestTime = m_aTimers[i];
-				}
 			}
 		}
 	}
