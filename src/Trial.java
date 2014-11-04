@@ -18,8 +18,8 @@ import java.util.Collections;
 
 public class Trial
 {
-	private int[] m_aEntries = new int[20];
-	private long[] m_aTimers = new long[20];
+	private int[] m_aEntries = new int[36];
+	private long[] m_aTimers = new long[36];
 	private long m_iFastestTime;
 	
 	Trial()
@@ -38,6 +38,9 @@ public class Trial
 			EntryNumbers.add(i);
 			
 		Collections.shuffle(EntryNumbers);
+		
+		for (int i = 0; i < 36; i++)
+			m_aEntries[i] = EntryNumbers.get(i);
 	}
 	public void setTimer(int step, long time)
 	{
@@ -62,7 +65,7 @@ public class Trial
 		return m_aEntries[index];
 	}
 	public int getSize() {return m_aEntries.length;}
-	public String ExportTrial()
+	public String getExportString()
 	{
 		String exportString = "Timings: ";
 		
@@ -83,8 +86,9 @@ public class Trial
 			else
 				exportString += m_aEntries[i] + ", ";
 		}
+		
+		exportString += "Fastest Time: " + m_iFastestTime + "\r\n\r\n";
 
 		return exportString;
 	}
-	public long getFastestTime()	{return m_iFastestTime;}
 }

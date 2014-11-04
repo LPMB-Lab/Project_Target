@@ -1,7 +1,6 @@
 import java.applet.Applet;
 import java.applet.AudioClip;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -24,18 +23,16 @@ import javax.swing.JPanel;
 
 class drawWindow extends JPanel implements MouseListener
 {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
-	private static final int m_iCircleDiameter = 100;
+	private static final int CIRCLE_DIAMETER = 100;
 	private static final int STATE_POSITION = 105;
 
-	Dimension screenSize;
+	int screenWidth;
+	int screenHeight;
 	RenderingHints rh;
 	
 	State m_State;
-	State m_RecoveryState;
 	Trial m_Trial;
 	int m_iCurrentTrialStep;
 	
@@ -51,9 +48,10 @@ class drawWindow extends JPanel implements MouseListener
 	
 	public drawWindow()
 	{
-		screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		screenWidth = Toolkit.getDefaultToolkit().getScreenSize().width;
+		screenHeight = Toolkit.getDefaultToolkit().getScreenSize().height;
 		setBackground(Color.BLACK);
-		setSize((int)screenSize.getWidth(),(int)screenSize.getHeight());
+		setSize((int)screenWidth,(int)screenHeight);
 		addMouseListener(this);
 
 		try {
@@ -85,12 +83,13 @@ class drawWindow extends JPanel implements MouseListener
         rh.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
         g2d.setRenderingHints(rh);
         
-        g2d.setColor(Color.blue);
+        g2d.setColor(Color.GREEN);
         g2d.setFont(new Font("TimesRoman", Font.PLAIN, 30)); 
         
         switch(m_State)
         {
 	        case READY:
+	        	g2d.fillOval((int)(screenWidth * 0.1), (int)(screenHeight * 0.5), CIRCLE_DIAMETER, CIRCLE_DIAMETER);
 	        	break;
 	        case COUNTDOWN:
 	        	g2d.drawString("Countdown to begin in " + m_iGlobalTimer + " seconds", 5, STATE_POSITION);
@@ -165,18 +164,9 @@ class drawWindow extends JPanel implements MouseListener
 		if (quitButton.isPressed(x, y))	{System.exit(0);}
 		else if (restartButton.isPressed(x,  y)){Reset();}
 		else if(saveButton.isPressed(x,  y))	{ExportFile();}
-		else
+		else if (m_State == State.WAIT_FOR_PRESS)
 		{
-			switch(m_State)
-	        {
-		        case WAIT_FOR_PRESS:
-		        {
-		        	CheckClick(x, y, m_Trial.getElementAt(m_iCurrentTrialStep));
-	        		break;
-	        	}
-			default:
-				break;
-	        }
+			CheckClick(x, y, m_Trial.getElementAt(m_iCurrentTrialStep));
 		}
 		
 		repaint();
@@ -200,15 +190,7 @@ class drawWindow extends JPanel implements MouseListener
 				fileName = dateFormat.format(date) + "_NON_NAMED_TRIAL" + ".txt";
 				
 				PrintWriter writer = new PrintWriter(fileName, "UTF-8");
-				String exportString = "";
-				
-				for (int i = 0; i < m_Trial.getSize(); i++)
-				{
-					exportString += "TRIAL #" + i + "\r\n";
-					exportString += m_Trial.ExportTrial();
-					exportString += "Fastest Time: " + m_Trial.getFastestTime() + "\r\n";
-					exportString += "\r\n";
-				}
+				String exportString = m_Trial.getExportString();
 				
 				writer.println(exportString);
 				writer.close();
@@ -221,7 +203,7 @@ class drawWindow extends JPanel implements MouseListener
 	{
 		//int z = (int) Math.sqrt(Math.pow((x1+m_iCircleDiameter/2-x), 2) + Math.pow((y1+m_iCircleDiameter/2-y), 2));
 		int z = 1;
-		if ( z < m_iCircleDiameter/2)
+		if ( z < CIRCLE_DIAMETER/2)
 		{
 			long lEndTime = new Date().getTime();
 			long diffTime = lEndTime - m_lStartTime;
