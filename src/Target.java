@@ -1,21 +1,21 @@
 public class Target
 {
-	private int x;
-	private int y;
-	private boolean fill;
+	private int m_iX;
+	private int m_iY;
+	private boolean m_bFill;
 	
 	public Target(int x, int y)
 	{
-		this.x = x;
-		this.y = y;
+		this.m_iX = x;
+		this.m_iY = y;
 		
-		fill = false;
+		m_bFill = false;
 	}
 
-	public int getX() {return x;}
-	public int getY() {return y;}
-	public boolean isFill() {return fill;}
-	public void setY(int y) {this.y = y;}
-	public void setX(int x) {this.x = x;}
-	public void setFill(boolean fill) {this.fill = fill;}
+	public int getX() {return m_iX;}
+	public int getY() {return m_iY;}
+	public boolean isFill() {return m_bFill;}
+	public void setY(int y) {m_iY = y;}
+	public void setX(int x) {m_iX = x;}
+	public void setFill(boolean fill) {m_bFill = fill;}
 }
