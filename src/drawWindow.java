@@ -84,10 +84,9 @@ class drawWindow extends JPanel implements MouseListener
 			{
 				Target myTarget = new Target((1+i*2)*100/12, (1+j*2)*100/12);
 				m_aTargets.add(myTarget);
+				
 			}
 		}
-		
-		m_aTargets.get(0).setFill(true);
 	}
     private void doDrawing(Graphics g)
     {
@@ -118,22 +117,24 @@ class drawWindow extends JPanel implements MouseListener
 			break;
         }
         
+        g2d.setColor(Color.BLUE);
+        g2d.drawString("CURRENT TARGET: " + (m_iCurrentTrialStep + 1) + "/36", 5, 75);
+        g2d.drawImage(restartButton.getImage(), restartButton.getX(), restartButton.getY(), null);
+        g2d.drawImage(quitButton.getImage(), quitButton.getX(), quitButton.getY(), null);
+        g2d.drawImage(saveButton.getImage(), saveButton.getX(), saveButton.getY(), null);
+        
         g2d.setColor(Color.YELLOW);
         for (int i = 0; i < m_aTargets.size(); i++)
         {
         	if (m_aTargets.get(i).isFill())
         	{
         		System.out.println("FOUND CIRCLE TO DRAW at: (" + m_aTargets.get(i).getX() + ", " + m_aTargets.get(i).getY() + ")");
-        		g2d.fillOval(m_aTargets.get(i).getX() * screenWidth/100, m_aTargets.get(i).getY() * screenHeight/100, CIRCLE_DIAMETER, CIRCLE_DIAMETER);
+        		g2d.fillOval(m_aTargets.get(i).getX() * screenWidth/100 - CIRCLE_DIAMETER/2, 
+        				m_aTargets.get(i).getY() * screenHeight/100 - CIRCLE_DIAMETER/2, 
+        				CIRCLE_DIAMETER, 
+        				CIRCLE_DIAMETER);
         	}
         }
-        		
-        
-        g2d.drawString("CURRENT TARGET: " + (m_iCurrentTrialStep + 1) + "/36", 5, 75);
-        g2d.drawImage(restartButton.getImage(), restartButton.getX(), restartButton.getY(), null);
-        g2d.drawImage(quitButton.getImage(), quitButton.getX(), quitButton.getY(), null);
-        g2d.drawImage(saveButton.getImage(), saveButton.getX(), saveButton.getY(), null);
-        
     }
     class updateTask extends TimerTask
 	{
