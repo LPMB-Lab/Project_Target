@@ -47,6 +47,7 @@ class drawWindow extends JPanel implements MouseListener
 	long m_lStartTime;
 	int m_iGlobalTimer;
 	double m_iPoints;
+	boolean m_bIsCheat;
 	
 	public drawWindow()
 	{
@@ -195,7 +196,10 @@ class drawWindow extends JPanel implements MouseListener
 		else if (m_State == State.READY)
 		{
 			if (isReadyPressed(e.getX(), e.getY()))
+			{
+				m_bIsCheat = false;
 				countDownToState(new Random().nextInt(1800) + 200, State.WAIT_FOR_PRESS);
+			}
 				
 		}
 		else if (m_State == State.WAIT_FOR_PRESS)
@@ -242,9 +246,9 @@ class drawWindow extends JPanel implements MouseListener
 		m_Trial.setTimer(m_iCurrentTrialStep, diffTime);
 		int z = (int) Math.sqrt(Math.pow(x-xTarget, 2) + Math.pow(y-yTarget, 2));
 		
-		if (diffTime < 2000)
+		if (diffTime < 2000 && !m_bIsCheat)
 		{
-			if (z < CIRCLE_DIAMETER/2)	
+			if (z < CIRCLE_DIAMETER/2)
 				m_iPoints += 1;
 			else if (z < CIRCLE_DIAMETER*1.25/2)
 				m_iPoints += 0.5;
@@ -275,6 +279,9 @@ class drawWindow extends JPanel implements MouseListener
 	@Override
 	public void mouseReleased(MouseEvent e)
 	{
+		if (m_State == State.COUNTDOWN)
+			m_bIsCheat = true;
+			
 		clearCircles();
 		UpdateGraphics();
 	}
