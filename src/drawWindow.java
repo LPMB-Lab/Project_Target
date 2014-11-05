@@ -1,5 +1,3 @@
-import java.applet.Applet;
-import java.applet.AudioClip;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -16,6 +14,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -45,10 +44,9 @@ class drawWindow extends JPanel implements MouseListener
 	Button quitButton;
 	Button saveButton;
 	
-	AudioClip correctSound;
-	
 	long m_lStartTime;
 	int m_iGlobalTimer;
+	double m_iPoints;
 	
 	public drawWindow()
 	{
@@ -62,7 +60,6 @@ class drawWindow extends JPanel implements MouseListener
 			restartButton = new Button(ImageIO.read(getClass().getResource("images/restartButton.png")), 5, 5);
 			saveButton = new Button(ImageIO.read(getClass().getResource("images/saveButton.png")), 100, 5);
 			quitButton = new Button(ImageIO.read(getClass().getResource("images/quitButton.png")), 195, 5);
-			correctSound = Applet.newAudioClip(getClass().getResource("sounds/correctSound.wav"));
 		} catch (IOException e) {e.printStackTrace();}
         
 		
@@ -79,15 +76,14 @@ class drawWindow extends JPanel implements MouseListener
 		m_Timer = new Timer();;
 		m_iCurrentTrialStep = 0;
 		m_iGlobalTimer = 0;
+		m_iPoints = 0;
 		
 		for (int i = 0; i < WIDTH_TARGETS; i++)
 		{
 			for (int j = 0; j < LENGTH_TARGETS; j++)
 			{
 				Target myTarget = new Target((1+i*2)*100/(WIDTH_TARGETS*2), (1+j*2)*100/(LENGTH_TARGETS*2));
-				myTarget.setFill(true);
 				m_aTargets.add(myTarget);
-				
 			}
 		}
 	}
@@ -99,29 +95,28 @@ class drawWindow extends JPanel implements MouseListener
         rh.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
         g2d.setRenderingHints(rh);
         
-        g2d.setColor(Color.GREEN);
         g2d.setFont(new Font("TimesRoman", Font.PLAIN, 30));
         
         switch(m_State)
         {
 	        case READY:
-	        	g2d.fillOval((int)(screenWidth * 0.1), (int)(screenHeight * 0.5), CIRCLE_DIAMETER, CIRCLE_DIAMETER);
+	        	g2d.setColor(Color.GREEN);
 	        	break;
 	        case COUNTDOWN:
-	        	g2d.drawString("Countdown to begin in " + m_iGlobalTimer + " seconds", 5, STATE_POSITION);
-	        case COMPLETED:
-	        	g2d.drawString("The test is complete! Thank you for participating!", 5, STATE_POSITION);
+	        case WAIT_FOR_PRESS:
+	        	g2d.setColor(Color.GRAY);
 	        	break;
-		case FINGER_PRESSED:
-			break;
-		case WAIT_FOR_PRESS:
-			break;
+	        case COMPLETED:
+	        	g2d.drawString("The test is complete! Thank you for participating!", 5, STATE_POSITION + 100);
+	        	break;
 		default:
 			break;
         }
         
+        g2d.fillOval((int)(screenWidth * 0.1 - CIRCLE_DIAMETER), (int)(screenHeight * 0.5 - CIRCLE_DIAMETER), CIRCLE_DIAMETER, CIRCLE_DIAMETER);
         g2d.setColor(Color.BLUE);
         g2d.drawString("CURRENT TARGET: " + (m_iCurrentTrialStep + 1) + "/36", 5, 75);
+        g2d.drawString("POINTS: " + m_iPoints, 5, 105);
         g2d.drawImage(restartButton.getImage(), restartButton.getX(), restartButton.getY(), null);
         g2d.drawImage(quitButton.getImage(), quitButton.getX(), quitButton.getY(), null);
         g2d.drawImage(saveButton.getImage(), saveButton.getX(), saveButton.getY(), null);
@@ -131,7 +126,6 @@ class drawWindow extends JPanel implements MouseListener
         {
         	if (m_aTargets.get(i).isFill())
         	{
-        		//System.out.println("FOUND CIRCLE TO DRAW at: (" + m_aTargets.get(i).getX() + ", " + m_aTargets.get(i).getY() + ")");
         		g2d.fillOval((int)(m_aTargets.get(i).getX() * (screenWidth - screenWidth * 0.25)/100 - CIRCLE_DIAMETER/2 + screenWidth*0.25), 
         				m_aTargets.get(i).getY() * screenHeight/100 - CIRCLE_DIAMETER/2, 
         				CIRCLE_DIAMETER, 
@@ -154,35 +148,40 @@ class drawWindow extends JPanel implements MouseListener
 			
 			if (m_State == State.COUNTDOWN)
 			{
-				if (m_iGlobalTimer == 0)
-				{
+				if (m_iGlobalTimer <= 0)
 					m_State = state;
-				}
 				else
 				{
-					m_Timer.schedule(new updateTask(State.WAIT_FOR_PRESS), 1000);
-					m_iGlobalTimer--;
+					m_Timer.schedule(new updateTask(state), 100);
+					m_iGlobalTimer -= 100;
 				}
 			}
 			
 			if (m_State == State.WAIT_FOR_PRESS)
 			{
+				m_aTargets.get(m_Trial.getElementAt(m_iCurrentTrialStep)).setFill(true);
+				UpdateGraphics();
 				m_lStartTime = new Date().getTime();
-				updateTrial();
 			}
-			
-			UpdateGraphics();
 		}
 	}
-    private void updateTrial()
-    {	
-    	repaint();
-    }
     private void countDownToState(int timer, State state)
     {
     	m_iGlobalTimer = timer;
     	m_State = State.COUNTDOWN;
-    	m_Timer.schedule(new updateTask(state), 1000);
+    	m_Timer.schedule(new updateTask(state), 100);
+    }
+    private void clearCircles()
+    {
+    	for (int i = 0; i < m_aTargets.size(); i++)
+    		m_aTargets.get(i).setFill(false);
+    }
+    private boolean isReadyPressed(int x, int y)
+    {
+    	if ((int) Math.sqrt(Math.pow((x+CIRCLE_DIAMETER/2-(screenWidth * 0.1)), 2) + Math.pow((y+CIRCLE_DIAMETER/2-(screenHeight * 0.5)), 2)) < CIRCLE_DIAMETER/2)
+    		return true;
+    	else
+    		return false;
     }
 	@Override
 	public void mousePressed(MouseEvent e)
@@ -193,6 +192,12 @@ class drawWindow extends JPanel implements MouseListener
 		if (quitButton.isPressed(x, y))	{System.exit(0);}
 		else if (restartButton.isPressed(x,  y)){Reset();}
 		else if(saveButton.isPressed(x,  y))	{ExportFile();}
+		else if (m_State == State.READY)
+		{
+			if (isReadyPressed(e.getX(), e.getY()))
+				countDownToState(new Random().nextInt(1800) + 200, State.WAIT_FOR_PRESS);
+				
+		}
 		else if (m_State == State.WAIT_FOR_PRESS)
 		{
 			CheckClick(x, y, m_Trial.getElementAt(m_iCurrentTrialStep));
@@ -230,32 +235,28 @@ class drawWindow extends JPanel implements MouseListener
 	}
 	private void CheckClick(int x, int y, int TargetID)
 	{
-		//int z = (int) Math.sqrt(Math.pow((x1+m_iCircleDiameter/2-x), 2) + Math.pow((y1+m_iCircleDiameter/2-y), 2));
-		int currentTarget = m_iCurrentTrialStep;
+		int xTarget = (int) (m_aTargets.get(TargetID).getX() * (screenWidth - screenWidth * 0.25)/100 + screenWidth*0.25);
+		int yTarget = m_aTargets.get(TargetID).getY() * screenHeight/100;
+		long lEndTime = new Date().getTime();
+		long diffTime = lEndTime - m_lStartTime;
+		m_Trial.setTimer(m_iCurrentTrialStep, diffTime);
+		int z = (int) Math.sqrt(Math.pow(x-xTarget, 2) + Math.pow(y-yTarget, 2));
 		
-		int z = 1;
-		if ( z < CIRCLE_DIAMETER/2)
+		if (diffTime < 2000)
 		{
-			long lEndTime = new Date().getTime();
-			long diffTime = lEndTime - m_lStartTime;
-			
-			m_Trial.setTimer(m_iCurrentTrialStep, diffTime);
-			
-			if (m_iCurrentTrialStep == 35)
-			{
-				m_State = State.COMPLETED;
-			}
-			else
-			{
-				correctSound.play();
-				try {Thread.sleep((long)(Math.random()*500 + 500));}
-				catch (InterruptedException e) {e.printStackTrace();}
-				
-				m_iCurrentTrialStep++;
-				updateTrial();
-			}
-			m_lStartTime = new Date().getTime();
+			if (z < CIRCLE_DIAMETER/2)	
+				m_iPoints += 1;
+			else if (z < CIRCLE_DIAMETER*1.25/2)
+				m_iPoints += 0.5;
 		}
+		
+		
+		if (m_iCurrentTrialStep == LENGTH_TARGETS*WIDTH_TARGETS)
+			m_State = State.COMPLETED;
+		else
+			m_State = State.READY;
+		
+		m_iCurrentTrialStep++;
 	}
 
     @Override
@@ -272,7 +273,11 @@ class drawWindow extends JPanel implements MouseListener
 	public void mouseExited(MouseEvent e) {}
 
 	@Override
-	public void mouseReleased(MouseEvent e) {}
+	public void mouseReleased(MouseEvent e)
+	{
+		clearCircles();
+		UpdateGraphics();
+	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {}
