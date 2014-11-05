@@ -14,6 +14,7 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -35,6 +36,7 @@ class drawWindow extends JPanel implements MouseListener
 	State m_State;
 	Trial m_Trial;
 	int m_iCurrentTrialStep;
+	ArrayList<Target> m_aTargets;
 	
 	Timer m_Timer;
 	Button restartButton;
@@ -56,8 +58,8 @@ class drawWindow extends JPanel implements MouseListener
 
 		try {
 			restartButton = new Button(ImageIO.read(getClass().getResource("images/restartButton.png")), 5, 5);
-			quitButton = new Button(ImageIO.read(getClass().getResource("images/quitButton.png")), 100, 5);
-			saveButton = new Button(ImageIO.read(getClass().getResource("images/saveButton.png")), 195, 5);
+			saveButton = new Button(ImageIO.read(getClass().getResource("images/saveButton.png")), 100, 5);
+			quitButton = new Button(ImageIO.read(getClass().getResource("images/quitButton.png")), 195, 5);
 			correctSound = Applet.newAudioClip(getClass().getResource("sounds/correctSound.wav"));
 		} catch (IOException e) {e.printStackTrace();}
         
@@ -70,10 +72,22 @@ class drawWindow extends JPanel implements MouseListener
 			m_Timer.cancel();
 		
 		m_State = State.READY;
+		m_aTargets = new ArrayList<Target>();
 		m_Trial = new Trial();
 		m_Timer = new Timer();;
 		m_iCurrentTrialStep = 0;
 		m_iGlobalTimer = 0;
+		
+		for (int i = 0; i < 6; i++)
+		{
+			for (int j = 0; j < 6; j++)
+			{
+				Target myTarget = new Target((1+i*2)*100/12, (1+j*2)*100/12);
+				m_aTargets.add(myTarget);
+			}
+		}
+		
+		m_aTargets.get(0).setFill(true);
 	}
     private void doDrawing(Graphics g)
     {
@@ -84,7 +98,7 @@ class drawWindow extends JPanel implements MouseListener
         g2d.setRenderingHints(rh);
         
         g2d.setColor(Color.GREEN);
-        g2d.setFont(new Font("TimesRoman", Font.PLAIN, 30)); 
+        g2d.setFont(new Font("TimesRoman", Font.PLAIN, 30));
         
         switch(m_State)
         {
@@ -103,6 +117,17 @@ class drawWindow extends JPanel implements MouseListener
 		default:
 			break;
         }
+        
+        g2d.setColor(Color.YELLOW);
+        for (int i = 0; i < m_aTargets.size(); i++)
+        {
+        	if (m_aTargets.get(i).isFill())
+        	{
+        		System.out.println("FOUND CIRCLE TO DRAW at: (" + m_aTargets.get(i).getX() + ", " + m_aTargets.get(i).getY() + ")");
+        		g2d.fillOval(m_aTargets.get(i).getX() * screenWidth/100, m_aTargets.get(i).getY() * screenHeight/100, CIRCLE_DIAMETER, CIRCLE_DIAMETER);
+        	}
+        }
+        		
         
         g2d.drawString("CURRENT TARGET: " + (m_iCurrentTrialStep + 1) + "/36", 5, 75);
         g2d.drawImage(restartButton.getImage(), restartButton.getX(), restartButton.getY(), null);
@@ -199,9 +224,11 @@ class drawWindow extends JPanel implements MouseListener
 			catch (UnsupportedEncodingException e) {e.printStackTrace();}
 		}
 	}
-	private void CheckClick(int x, int y, int fingerID)
+	private void CheckClick(int x, int y, int TargetID)
 	{
 		//int z = (int) Math.sqrt(Math.pow((x1+m_iCircleDiameter/2-x), 2) + Math.pow((y1+m_iCircleDiameter/2-y), 2));
+		int currentTarget = m_iCurrentTrialStep;
+		
 		int z = 1;
 		if ( z < CIRCLE_DIAMETER/2)
 		{

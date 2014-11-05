@@ -6,9 +6,8 @@ public class Target
 	
 	public Target(int x, int y)
 	{
-		this.m_iX = x;
-		this.m_iY = y;
-		
+		m_iX = x;
+		m_iY = y;
 		m_bFill = false;
 	}
 
