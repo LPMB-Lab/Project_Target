@@ -46,7 +46,7 @@ public class Trial
 	{
 		m_aTimers[step] = time;
 		
-		if (step == 19)
+		if (step == 35)
 		{
 			m_iFastestTime = m_aTimers[0];
 			for (int i = 1; i < m_aTimers.length; i++)
@@ -63,11 +63,11 @@ public class Trial
 	public int getSize() {return m_aEntries.length;}
 	public String getExportString()
 	{
-		String exportString = "Timings: ";
+		String exportString = "Timings (ms): ";
 		
 		for (int i = 0; i < m_aTimers.length; i++)
 		{
-			if (i == 19)
+			if (i == 35)
 				exportString += m_aTimers[i] + "\r\n";
 			else
 				exportString += m_aTimers[i] + ", ";
@@ -77,13 +77,13 @@ public class Trial
 		
 		for (int i = 0; i < m_aEntries.length; i++)
 		{
-			if (i == 19)
+			if (i == 35)
 				exportString += m_aEntries[i] + "\r\n";
 			else
 				exportString += m_aEntries[i] + ", ";
 		}
 		
-		exportString += "Fastest Time: " + m_iFastestTime + "\r\n\r\n";
+		exportString += "Fastest Time (ms): " + m_iFastestTime + "ms \r\n\r\n";
 
 		return exportString;
 	}

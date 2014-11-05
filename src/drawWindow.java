@@ -255,12 +255,13 @@ class drawWindow extends JPanel implements MouseListener
 		}
 		
 		
-		if (m_iCurrentTrialStep == LENGTH_TARGETS*WIDTH_TARGETS)
+		if (m_iCurrentTrialStep == LENGTH_TARGETS*WIDTH_TARGETS-1)
 			m_State = State.COMPLETED;
 		else
+		{
 			m_State = State.READY;
-		
-		m_iCurrentTrialStep++;
+			m_iCurrentTrialStep++;
+		}
 	}
 
     @Override
