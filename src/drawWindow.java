@@ -28,6 +28,8 @@ class drawWindow extends JPanel implements MouseListener
 	private static final long serialVersionUID = 1L;
 	private static final int CIRCLE_DIAMETER = 100;
 	private static final int STATE_POSITION = 105;
+	private static final int LENGTH_TARGETS = 6;
+	private static final int WIDTH_TARGETS = 6;
 
 	int screenWidth;
 	int screenHeight;
@@ -78,11 +80,12 @@ class drawWindow extends JPanel implements MouseListener
 		m_iCurrentTrialStep = 0;
 		m_iGlobalTimer = 0;
 		
-		for (int i = 0; i < 6; i++)
+		for (int i = 0; i < WIDTH_TARGETS; i++)
 		{
-			for (int j = 0; j < 6; j++)
+			for (int j = 0; j < LENGTH_TARGETS; j++)
 			{
-				Target myTarget = new Target((1+i*2)*100/12, (1+j*2)*100/12);
+				Target myTarget = new Target((1+i*2)*100/(WIDTH_TARGETS*2), (1+j*2)*100/(LENGTH_TARGETS*2));
+				myTarget.setFill(true);
 				m_aTargets.add(myTarget);
 				
 			}
@@ -128,8 +131,8 @@ class drawWindow extends JPanel implements MouseListener
         {
         	if (m_aTargets.get(i).isFill())
         	{
-        		System.out.println("FOUND CIRCLE TO DRAW at: (" + m_aTargets.get(i).getX() + ", " + m_aTargets.get(i).getY() + ")");
-        		g2d.fillOval(m_aTargets.get(i).getX() * screenWidth/100 - CIRCLE_DIAMETER/2, 
+        		//System.out.println("FOUND CIRCLE TO DRAW at: (" + m_aTargets.get(i).getX() + ", " + m_aTargets.get(i).getY() + ")");
+        		g2d.fillOval((int)(m_aTargets.get(i).getX() * (screenWidth - screenWidth * 0.25)/100 - CIRCLE_DIAMETER/2 + screenWidth*0.25), 
         				m_aTargets.get(i).getY() * screenHeight/100 - CIRCLE_DIAMETER/2, 
         				CIRCLE_DIAMETER, 
         				CIRCLE_DIAMETER);
