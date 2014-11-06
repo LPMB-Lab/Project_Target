@@ -246,7 +246,7 @@ class drawWindow extends JPanel implements MouseListener
 		m_Trial.setTimer(m_iCurrentTrialStep, diffTime);
 		int z = (int) Math.sqrt(Math.pow(x-xTarget, 2) + Math.pow(y-yTarget, 2));
 		
-		if (diffTime < 2000 && !m_bIsCheat)
+		if (diffTime < 2000 && diffTime > 50 && !m_bIsCheat)
 		{
 			if (z < CIRCLE_DIAMETER/2)
 				m_iPoints += 1;
