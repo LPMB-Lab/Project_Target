@@ -77,7 +77,6 @@ class drawWindow extends JPanel implements MouseListener {
 		m_aTargets = new ArrayList<Target>();
 		m_Trial = new Trial();
 		m_Timer = new Timer();
-		;
 		m_iCurrentTrialStep = 0;
 		m_iGlobalTimer = 0;
 		m_iPoints = 0;
@@ -120,13 +119,18 @@ class drawWindow extends JPanel implements MouseListener {
 			break;
 		}
 
+		// Create Start Circle
 		g2d.fillOval((int) (screenWidth * 0.1 - CIRCLE_DIAMETER),
 				(int) (screenHeight * 0.5 - CIRCLE_DIAMETER), CIRCLE_DIAMETER,
 				CIRCLE_DIAMETER);
+		
+		// Create Labels
 		g2d.setColor(Color.BLUE);
 		g2d.drawString("CURRENT TARGET: " + (m_iCurrentTrialStep + 1) + "/36",
 				5, 75);
 		g2d.drawString("POINTS: " + m_iPoints, 5, 105);
+		
+		// Creating Buttons
 		g2d.drawImage(restartButton.getImage(), restartButton.getX(),
 				restartButton.getY(), null);
 		g2d.drawImage(quitButton.getImage(), quitButton.getX(),
@@ -134,6 +138,7 @@ class drawWindow extends JPanel implements MouseListener {
 		g2d.drawImage(saveButton.getImage(), saveButton.getX(),
 				saveButton.getY(), null);
 
+		// Create targets but only fill the one that is required to be
 		g2d.setColor(Color.YELLOW);
 		for (int i = 0; i < m_aTargets.size(); i++) {
 			if (m_aTargets.get(i).isFill()) {
@@ -177,6 +182,7 @@ class drawWindow extends JPanel implements MouseListener {
 						.setFill(true);
 				UpdateGraphics();
 				m_lStartTime = new Date().getTime();
+				System.out.println("WAIT FOR PRESS");
 			}
 		}
 	}
@@ -193,6 +199,7 @@ class drawWindow extends JPanel implements MouseListener {
 	}
 
 	private boolean isReadyPressed(int x, int y) {
+		System.out.println("Ready Pressed");
 		if ((int) Math
 				.sqrt(Math.pow((x + CIRCLE_DIAMETER / 2 - (screenWidth * 0.1)),
 						2)
@@ -256,6 +263,8 @@ class drawWindow extends JPanel implements MouseListener {
 			} catch (UnsupportedEncodingException e) {
 				e.printStackTrace();
 			}
+		} else {
+			System.out.println("Trial is not yet finished");
 		}
 	}
 
@@ -300,8 +309,11 @@ class drawWindow extends JPanel implements MouseListener {
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		if (m_State == State.COUNTDOWN)
+		if (m_State == State.COUNTDOWN) {
 			m_bIsCheat = true;
+			
+			System.out.println("CHEATING");
+		}
 
 		clearCircles();
 		UpdateGraphics();
@@ -311,3 +323,4 @@ class drawWindow extends JPanel implements MouseListener {
 	public void mouseClicked(MouseEvent e) {
 	}
 }
+
