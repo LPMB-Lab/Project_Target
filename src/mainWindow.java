@@ -1,18 +1,18 @@
-import javax.swing.JFrame;
+import javax.swing.*;
 
-public class mainWindow extends JFrame
-{
-	private static final long serialVersionUID = 1L;
+public class mainWindow extends JFrame {
+    private static final long serialVersionUID = 1L;
 
-	public static void main(String[] args) {new mainWindow();}
-	
-	public mainWindow()
-	{	
-		setTitle("Project Target");
+    public static void main(String[] args) {
+        new mainWindow();
+    }
+
+    public mainWindow() {
+        setTitle("Project Target");
         add(new drawWindow());
-        setExtendedState(JFrame.MAXIMIZED_BOTH); 
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setVisible(true);
-	}
+    }
 }

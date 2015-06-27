@@ -1,7 +1,6 @@
-enum State
-{
-	READY,
-	COUNTDOWN,
-	WAIT_FOR_PRESS,
-	COMPLETED
+enum State {
+    READY,
+    COUNTDOWN,
+    WAIT_FOR_PRESS,
+    COMPLETED
 };
