@@ -19,12 +19,18 @@ import java.util.Collections;
 
 public class Trial {
 	private int[] m_aEntries = new int[36];
-	private long[] m_aTimers = new long[36];
+	private long[] m_aResponseTimers = new long[36];
+	private long[] m_aReactionTimers = new long [36];
 	private long m_iFastestTime;
 
 	Trial() {
-		for (int i = 0; i < m_aEntries.length; i++)
-			m_aTimers[i] = 0;
+		for (int i = 0; i < m_aEntries.length; i++) {
+			m_aResponseTimers[i] = 0;
+		}
+		
+		for (int i = 0; i < m_aEntries.length; i++) {
+			m_aReactionTimers[i] = 0;
+		}
 
 		GenerateTrials();
 	}
@@ -42,13 +48,13 @@ public class Trial {
 	}
 
 	public void setTimer(int step, long time) {
-		m_aTimers[step] = time;
+		m_aResponseTimers[step] = time;
 
 		if (step == 35) {
-			m_iFastestTime = m_aTimers[0];
-			for (int i = 1; i < m_aTimers.length; i++) {
-				if (m_aTimers[i] < m_iFastestTime)
-					m_iFastestTime = m_aTimers[i];
+			m_iFastestTime = m_aResponseTimers[0];
+			for (int i = 1; i < m_aResponseTimers.length; i++) {
+				if (m_aResponseTimers[i] < m_iFastestTime)
+					m_iFastestTime = m_aResponseTimers[i];
 			}
 		}
 	}
@@ -62,13 +68,22 @@ public class Trial {
 	}
 
 	public String getExportString() {
-		String exportString = "Timings (ms): ";
+		String exportString = "Response Timings (ms): ";
 
-		for (int i = 0; i < m_aTimers.length; i++) {
+		for (int i = 0; i < m_aResponseTimers.length; i++) {
 			if (i == 35)
-				exportString += m_aTimers[i] + "\r\n";
+				exportString += m_aResponseTimers[i] + "\r\n";
 			else
-				exportString += m_aTimers[i] + ", ";
+				exportString += m_aResponseTimers[i] + ", ";
+		}
+		
+		exportString += "Reaction Timings (ms): ";
+		
+		for (int i = 0; i < m_aReactionTimers.length; i++) {
+			if (i == 35)
+				exportString += m_aReactionTimers[i] + "\r\n";
+			else
+				exportString += m_aReactionTimers[i] + ", ";
 		}
 
 		exportString += "Entries: ";
