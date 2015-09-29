@@ -47,8 +47,9 @@ public class Trial {
 			m_aEntries[i] = EntryNumbers.get(i);
 	}
 
-	public void setTimer(int step, long time) {
-		m_aResponseTimers[step] = time;
+	public void setTimer(int step, long responseTime, long reactionTime) {
+		m_aResponseTimers[step] = responseTime;
+		m_aReactionTimers[step] = reactionTime;
 
 		if (step == 35) {
 			m_iFastestTime = m_aResponseTimers[0];
@@ -71,28 +72,19 @@ public class Trial {
 		String exportString = "Response Timings (ms): ";
 
 		for (int i = 0; i < m_aResponseTimers.length; i++) {
-			if (i == 35)
-				exportString += m_aResponseTimers[i] + "\r\n";
-			else
-				exportString += m_aResponseTimers[i] + ", ";
+			exportString += m_aResponseTimers[i] + i == 35 ? "\r\n" : ", ";
 		}
 		
 		exportString += "Reaction Timings (ms): ";
 		
 		for (int i = 0; i < m_aReactionTimers.length; i++) {
-			if (i == 35)
-				exportString += m_aReactionTimers[i] + "\r\n";
-			else
-				exportString += m_aReactionTimers[i] + ", ";
+			exportString += m_aReactionTimers[i] + i == 35 ? "\r\n" : ", ";
 		}
 
 		exportString += "Entries: ";
 
 		for (int i = 0; i < m_aEntries.length; i++) {
-			if (i == 35)
-				exportString += m_aEntries[i] + "\r\n";
-			else
-				exportString += m_aEntries[i] + ", ";
+			exportString += m_aEntries[i] +  i == 35 ? "\r\n" : ", ";
 		}
 
 		exportString += "Fastest Time (ms): " + m_iFastestTime + "ms \r\n\r\n";
