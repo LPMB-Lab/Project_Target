@@ -18,9 +18,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class Trial {
-	private int[] m_aEntries = new int[36];
-	private long[] m_aResponseTimers = new long[36];
-	private long[] m_aReactionTimers = new long [36];
+	
+	private int NUMBER_OF_TRIALS = 36;
+	
+	private int[] m_aEntries = new int[NUMBER_OF_TRIALS];
+	private long[] m_aResponseTimers = new long[NUMBER_OF_TRIALS];
+	private long[] m_aReactionTimers = new long [NUMBER_OF_TRIALS];
 	private long m_iFastestTime;
 
 	Trial() {
@@ -38,12 +41,12 @@ public class Trial {
 	private void GenerateTrials() {
 		ArrayList<Integer> EntryNumbers = new ArrayList<Integer>();
 
-		for (int i = 0; i < 36; i++)
+		for (int i = 0; i < NUMBER_OF_TRIALS; i++)
 			EntryNumbers.add(i);
 
 		Collections.shuffle(EntryNumbers);
 
-		for (int i = 0; i < 36; i++)
+		for (int i = 0; i < NUMBER_OF_TRIALS; i++)
 			m_aEntries[i] = EntryNumbers.get(i);
 	}
 
@@ -51,7 +54,7 @@ public class Trial {
 		m_aResponseTimers[step] = responseTime;
 		m_aReactionTimers[step] = reactionTime;
 
-		if (step == 35) {
+		if (step == NUMBER_OF_TRIALS - 1) {
 			m_iFastestTime = m_aResponseTimers[0];
 			for (int i = 1; i < m_aResponseTimers.length; i++) {
 				if (m_aResponseTimers[i] < m_iFastestTime)
@@ -72,19 +75,19 @@ public class Trial {
 		String exportString = "Response Timings (ms): ";
 
 		for (int i = 0; i < m_aResponseTimers.length; i++) {
-			exportString += m_aResponseTimers[i] + i == 35 ? "\r\n" : ", ";
+			exportString += m_aResponseTimers[i] + i == NUMBER_OF_TRIALS - 1 ? "\r\n" : ", ";
 		}
 		
 		exportString += "Reaction Timings (ms): ";
 		
 		for (int i = 0; i < m_aReactionTimers.length; i++) {
-			exportString += m_aReactionTimers[i] + i == 35 ? "\r\n" : ", ";
+			exportString += m_aReactionTimers[i] + i == NUMBER_OF_TRIALS - 1 ? "\r\n" : ", ";
 		}
 
 		exportString += "Entries: ";
 
 		for (int i = 0; i < m_aEntries.length; i++) {
-			exportString += m_aEntries[i] +  i == 35 ? "\r\n" : ", ";
+			exportString += m_aEntries[i] +  i == NUMBER_OF_TRIALS - 1 ? "\r\n" : ", ";
 		}
 
 		exportString += "Fastest Time (ms): " + m_iFastestTime + "ms \r\n\r\n";
