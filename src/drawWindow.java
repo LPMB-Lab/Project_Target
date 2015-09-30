@@ -19,6 +19,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 class drawWindow extends JPanel implements MouseListener {
@@ -217,7 +218,13 @@ class drawWindow extends JPanel implements MouseListener {
 		int y = e.getY();
 
 		if (quitButton.isPressed(x, y)) {
-			System.exit(0);
+			int dialogResult = JOptionPane.showConfirmDialog(null,
+					"Are you sure you want to quit?", "Warning",
+					JOptionPane.YES_NO_OPTION);
+
+			if (dialogResult == JOptionPane.YES_OPTION)
+				System.exit(0);
+			
 		} else if (restartButton.isPressed(x, y)) {
 			Reset();
 		} else if (saveButton.isPressed(x, y)) {
@@ -228,7 +235,6 @@ class drawWindow extends JPanel implements MouseListener {
 				countDownToState(new Random().nextInt(1800) + 200,
 						State.WAIT_FOR_PRESS);
 			}
-
 		} else if (m_State == State.WAIT_FOR_PRESS) {
 			CheckClick(x, y, m_Trial.getElementAt(m_iCurrentTrialStep));
 		}
