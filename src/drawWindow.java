@@ -274,6 +274,7 @@ class drawWindow extends JPanel implements MouseListener {
 		long diffTime = lEndTime - m_lStartTime;
 		m_Trial.setResponseTimer(m_iCurrentTrialStep, diffTime);
 		
+		// Calculate click accuracy
 		int xTarget = (int) (m_aTargets.get(TargetID).getX()
 				* (screenWidth - screenWidth * 0.25) / 100 + screenWidth * 0.25);
 		int yTarget = m_aTargets.get(TargetID).getY() * screenHeight / 100;
@@ -286,7 +287,8 @@ class drawWindow extends JPanel implements MouseListener {
 			else if (z < CIRCLE_DIAMETER * 1.25 / 2)
 				m_iPoints += 0.5;
 		}
-
+		
+		// If last target then set to complete, if not then increment trial step
 		if (m_iCurrentTrialStep == LENGTH_TARGETS * WIDTH_TARGETS - 1)
 			m_State = State.COMPLETED;
 		else {
