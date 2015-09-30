@@ -1,19 +1,4 @@
 
-/*
- *   FINGERS:
- *   ==========
- *   LEFT HAND:
- *   -4 : Pinky
- *   -3 : Ring
- *   -2 : Middle
- *   -1 : Index
- *   
- *   RIGHT HAND:
- *   +1 : Index
- *   +2 : Middle
- *   +3 : Ring
- *   +4 : Pinky
- */
 import java.util.ArrayList;
 import java.util.Collections;
 
