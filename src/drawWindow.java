@@ -304,10 +304,14 @@ class drawWindow extends JPanel implements MouseListener {
 				+ Math.pow(y - yTarget, 2));
 
 		if (diffTime < 2000 && diffTime > 50 && !m_bIsCheat) {
-			if (z < CIRCLE_DIAMETER / 2)
+			if (z < CIRCLE_DIAMETER / 2) {
+				// If direct shot, add one point to score
 				m_iPoints += 1;
-			else if (z < CIRCLE_DIAMETER * 1.25 / 2)
+			}
+			else if (z < CIRCLE_DIAMETER * 1.25 / 2) {
+				// If 125% of radius, add 0.5 points
 				m_iPoints += 0.5;
+			}
 		}
 		
 		// If last target then set to complete, if not then increment trial step
@@ -336,8 +340,8 @@ class drawWindow extends JPanel implements MouseListener {
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		if (m_State == State.COUNTDOWN) {
+			// If the mouse is released during countdown, it means the user released finger before the target appeared therefore it is a cheat
 			m_bIsCheat = true;
-			
 			System.out.println("CHEATING");
 		}
 
