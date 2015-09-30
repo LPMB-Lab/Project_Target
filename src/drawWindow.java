@@ -274,7 +274,7 @@ class drawWindow extends JPanel implements MouseListener {
 		int yTarget = m_aTargets.get(TargetID).getY() * screenHeight / 100;
 		long lEndTime = new Date().getTime();
 		long diffTime = lEndTime - m_lStartTime;
-		m_Trial.setTimer(m_iCurrentTrialStep, diffTime);
+		m_Trial.setResponseTimer(m_iCurrentTrialStep, diffTime);
 		int z = (int) Math.sqrt(Math.pow(x - xTarget, 2)
 				+ Math.pow(y - yTarget, 2));
 
