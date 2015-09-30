@@ -19,8 +19,11 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import javax.imageio.ImageIO;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 class drawWindow extends JPanel implements MouseListener {
 
@@ -224,7 +227,6 @@ class drawWindow extends JPanel implements MouseListener {
 
 			if (dialogResult == JOptionPane.YES_OPTION)
 				System.exit(0);
-			
 		} else if (restartButton.isPressed(x, y)) {
 			Reset();
 		} else if (saveButton.isPressed(x, y)) {
@@ -249,7 +251,19 @@ class drawWindow extends JPanel implements MouseListener {
 	}
 
 	private void ExportFile() {
-		if (m_State == State.COMPLETED) {
+		
+		JTextField fileNameInput = new JTextField();
+		String CompletionString = "Please enter File Name";
+
+		if (m_State != State.COMPLETED)
+			CompletionString += " (Trial is Unfinished)";
+
+		final JComponent[] inputs = new JComponent[] {
+				new JLabel(CompletionString), fileNameInput };
+		int dialogResult = JOptionPane.showConfirmDialog(null, inputs,
+				"Save File", JOptionPane.OK_CANCEL_OPTION);
+
+		if (dialogResult == JOptionPane.YES_OPTION) {
 			try {
 				DateFormat dateFormat = new SimpleDateFormat(
 						"yyyy_MM_dd HH_mm_ss");
@@ -269,8 +283,6 @@ class drawWindow extends JPanel implements MouseListener {
 			} catch (UnsupportedEncodingException e) {
 				e.printStackTrace();
 			}
-		} else {
-			System.out.println("Trial is not yet finished");
 		}
 	}
 
