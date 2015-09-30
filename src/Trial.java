@@ -24,7 +24,8 @@ public class Trial {
 	private int[] m_aEntries = new int[NUMBER_OF_TRIALS];
 	private long[] m_aResponseTimers = new long[NUMBER_OF_TRIALS];
 	private long[] m_aReactionTimers = new long [NUMBER_OF_TRIALS];
-	private long m_iFastestTime;
+	private long m_iFastestResponseTime;
+	private long m_iFastestReactionTime;
 
 	Trial() {
 		for (int i = 0; i < m_aEntries.length; i++) {
@@ -50,15 +51,28 @@ public class Trial {
 			m_aEntries[i] = EntryNumbers.get(i);
 	}
 
-	public void setTimer(int step, long responseTime, long reactionTime) {
+	public void setResponseTimer(int step, long responseTime) {
 		m_aResponseTimers[step] = responseTime;
-		m_aReactionTimers[step] = reactionTime;
 
 		if (step == NUMBER_OF_TRIALS - 1) {
-			m_iFastestTime = m_aResponseTimers[0];
+			m_iFastestResponseTime = m_aResponseTimers[0];
 			for (int i = 1; i < m_aResponseTimers.length; i++) {
-				if (m_aResponseTimers[i] < m_iFastestTime)
-					m_iFastestTime = m_aResponseTimers[i];
+				if (m_aResponseTimers[i] < m_iFastestResponseTime) {
+					m_iFastestResponseTime = m_aResponseTimers[i];
+				}
+			}
+		}
+	}
+	
+	public void setReactionTimer(int step, long reactionTime) {
+		m_aReactionTimers[step] = reactionTime;
+		
+		if (step == NUMBER_OF_TRIALS - 1) {
+			m_iFastestReactionTime = m_aReactionTimers[0];
+			for (int i = 1; i < m_aReactionTimers.length; i++) {
+				if (m_aReactionTimers[i] < m_iFastestReactionTime) {
+					m_iFastestReactionTime = m_aReactionTimers[i];
+				}
 			}
 		}
 	}
@@ -90,7 +104,7 @@ public class Trial {
 			exportString += m_aEntries[i] +  i == NUMBER_OF_TRIALS - 1 ? "\r\n" : ", ";
 		}
 
-		exportString += "Fastest Time (ms): " + m_iFastestTime + "ms \r\n\r\n";
+		exportString += "Fastest Response Time (ms): " + m_iFastestResponseTime + "ms \r\n\r\n";
 
 		return exportString;
 	}
