@@ -269,12 +269,14 @@ class drawWindow extends JPanel implements MouseListener {
 	}
 
 	private void CheckClick(int x, int y, int TargetID) {
-		int xTarget = (int) (m_aTargets.get(TargetID).getX()
-				* (screenWidth - screenWidth * 0.25) / 100 + screenWidth * 0.25);
-		int yTarget = m_aTargets.get(TargetID).getY() * screenHeight / 100;
+		// Calculate the Response TImer
 		long lEndTime = new Date().getTime();
 		long diffTime = lEndTime - m_lStartTime;
 		m_Trial.setResponseTimer(m_iCurrentTrialStep, diffTime);
+		
+		int xTarget = (int) (m_aTargets.get(TargetID).getX()
+				* (screenWidth - screenWidth * 0.25) / 100 + screenWidth * 0.25);
+		int yTarget = m_aTargets.get(TargetID).getY() * screenHeight / 100;
 		int z = (int) Math.sqrt(Math.pow(x - xTarget, 2)
 				+ Math.pow(y - yTarget, 2));
 
