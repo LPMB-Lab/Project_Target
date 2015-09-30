@@ -233,11 +233,15 @@ class drawWindow extends JPanel implements MouseListener {
 			ExportFile();
 		} else if (m_State == State.READY) {
 			if (isReadyPressed(e.getX(), e.getY())) {
+				// Set the cheat option to false as soon as the ready button is pressed
 				m_bIsCheat = false;
+				
+				// Make the target appear within 1800 - 2000 ms
 				countDownToState(new Random().nextInt(1800) + 200,
 						State.WAIT_FOR_PRESS);
 			}
 		} else if (m_State == State.WAIT_FOR_PRESS) {
+			// If we are waiting for a press, check for contact with the active target
 			CheckClick(x, y, m_Trial.getElementAt(m_iCurrentTrialStep));
 		}
 
