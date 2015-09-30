@@ -104,7 +104,8 @@ public class Trial {
 			exportString += m_aEntries[i] +  i == NUMBER_OF_TRIALS - 1 ? "\r\n" : ", ";
 		}
 
-		exportString += "Fastest Response Time (ms): " + m_iFastestResponseTime + "ms \r\n\r\n";
+		exportString += "Fastest Response Time (ms): " + m_iFastestResponseTime + "ms \r\n";
+		exportString += "Fastest Reaction Time (ms): " + m_iFastestReactionTime + "ms \r\n\r\n";
 
 		return exportString;
 	}
