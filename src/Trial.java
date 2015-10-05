@@ -9,6 +9,7 @@ public class Trial {
 	private int[] m_aEntries = new int[NUMBER_OF_TRIALS];
 	private long[] m_aResponseTimers = new long[NUMBER_OF_TRIALS];
 	private long[] m_aReactionTimers = new long [NUMBER_OF_TRIALS];
+	private float[] m_aPoints = new float[NUMBER_OF_TRIALS];
 	private long m_iFastestResponseTime;
 	private long m_iFastestReactionTime;
 
@@ -19,6 +20,10 @@ public class Trial {
 		
 		for (int i = 0; i < m_aEntries.length; i++) {
 			m_aReactionTimers[i] = 0;
+		}
+		
+		for (int i = 0; i < m_aPoints.length; i++) {
+			m_aPoints[i] = 0;
 		}
 
 		GenerateTrials();
@@ -61,6 +66,10 @@ public class Trial {
 			}
 		}
 	}
+	
+	public void setPoints(int step, float points) {
+		m_aPoints[step] = points;
+	}
 
 	public int getElementAt(int index) {
 		return m_aEntries[index];
@@ -74,23 +83,23 @@ public class Trial {
 		String exportString = "Response Timings (ms): ";
 
 		for (int i = 0; i < m_aResponseTimers.length; i++) {
-			exportString += m_aResponseTimers[i] + i == NUMBER_OF_TRIALS - 1 ? "\r\n" : ", ";
+			exportString += m_aResponseTimers[i] + ", ";
 		}
 		
-		exportString += "Reaction Timings (ms): ";
+		exportString += "\r\nReaction Timings (ms): ";
 		
 		for (int i = 0; i < m_aReactionTimers.length; i++) {
-			exportString += m_aReactionTimers[i] + i == NUMBER_OF_TRIALS - 1 ? "\r\n" : ", ";
+			exportString += m_aReactionTimers[i] + ", ";
 		}
-
-		exportString += "Entries: ";
+		
+		exportString += "\r\nEntries: ";
 
 		for (int i = 0; i < m_aEntries.length; i++) {
-			exportString += m_aEntries[i] +  i == NUMBER_OF_TRIALS - 1 ? "\r\n" : ", ";
+			exportString += m_aEntries[i] + ", ";
 		}
 
-		exportString += "Fastest Response Time (ms): " + m_iFastestResponseTime + "ms \r\n";
-		exportString += "Fastest Reaction Time (ms): " + m_iFastestReactionTime + "ms \r\n\r\n";
+		exportString += "\r\nFastest Response Time (ms): " + m_iFastestResponseTime + "ms";
+		exportString += "\r\nFastest Reaction Time (ms): " + m_iFastestReactionTime + "ms \r\n";
 
 		return exportString;
 	}
