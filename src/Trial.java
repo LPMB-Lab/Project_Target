@@ -32,13 +32,15 @@ public class Trial {
 	private void GenerateTrials() {
 		ArrayList<Integer> EntryNumbers = new ArrayList<Integer>();
 
-		for (int i = 0; i < NUMBER_OF_TRIALS; i++)
+		for (int i = 0; i < NUMBER_OF_TRIALS; i++) {
 			EntryNumbers.add(i);
+		}
 
 		Collections.shuffle(EntryNumbers);
 
-		for (int i = 0; i < NUMBER_OF_TRIALS; i++)
+		for (int i = 0; i < NUMBER_OF_TRIALS; i++) {
 			m_aEntries[i] = EntryNumbers.get(i);
+		}
 	}
 
 	public void setResponseTimer(int step, long responseTime) {
