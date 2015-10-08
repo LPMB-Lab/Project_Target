@@ -14,15 +14,15 @@ public class Trial {
 	private long m_iFastestReactionTime;
 
 	Trial() {
-		for (int i = 0; i < m_aEntries.length; i++) {
+		for (int i = 0; i < NUMBER_OF_TRIALS; i++) {
 			m_aResponseTimers[i] = 0;
 		}
 		
-		for (int i = 0; i < m_aEntries.length; i++) {
+		for (int i = 0; i < NUMBER_OF_TRIALS; i++) {
 			m_aReactionTimers[i] = 0;
 		}
 		
-		for (int i = 0; i < m_aPoints.length; i++) {
+		for (int i = 0; i < NUMBER_OF_TRIALS; i++) {
 			m_aPoints[i] = 0;
 		}
 
@@ -45,13 +45,14 @@ public class Trial {
 
 	public void setResponseTimer(int step, long responseTime) {
 		m_aResponseTimers[step] = responseTime;
-
-		if (step == NUMBER_OF_TRIALS - 1) {
-			m_iFastestResponseTime = m_aResponseTimers[0];
-			for (int i = 1; i < m_aResponseTimers.length; i++) {
-				if (m_aResponseTimers[i] < m_iFastestResponseTime) {
-					m_iFastestResponseTime = m_aResponseTimers[i];
-				}
+		
+		if (step == 0) {
+			// On the first step set the fastest time
+			m_iFastestResponseTime = responseTime;
+		} else {
+			// Else check with current fastest and set it
+			if (responseTime < m_iFastestResponseTime) {
+				m_iFastestResponseTime = responseTime;
 			}
 		}
 	}
@@ -59,12 +60,12 @@ public class Trial {
 	public void setReactionTimer(int step, long reactionTime) {
 		m_aReactionTimers[step] = reactionTime;
 		
-		if (step == NUMBER_OF_TRIALS - 1) {
-			m_iFastestReactionTime = m_aReactionTimers[0];
-			for (int i = 1; i < m_aReactionTimers.length; i++) {
-				if (m_aReactionTimers[i] < m_iFastestReactionTime) {
-					m_iFastestReactionTime = m_aReactionTimers[i];
-				}
+		if (step == 0) {
+			// On the first step set the fastest time
+			m_iFastestReactionTime = reactionTime;
+		} else {
+			if (reactionTime < m_iFastestReactionTime) {
+				m_iFastestReactionTime = reactionTime;
 			}
 		}
 	}
@@ -84,19 +85,19 @@ public class Trial {
 	public String getExportString() {
 		String exportString = "Response Timings (ms): ";
 
-		for (int i = 0; i < m_aResponseTimers.length; i++) {
+		for (int i = 0; i < NUMBER_OF_TRIALS; i++) {
 			exportString += m_aResponseTimers[i] + ", ";
 		}
 		
 		exportString += "\r\nReaction Timings (ms): ";
 		
-		for (int i = 0; i < m_aReactionTimers.length; i++) {
+		for (int i = 0; i < NUMBER_OF_TRIALS; i++) {
 			exportString += m_aReactionTimers[i] + ", ";
 		}
 		
 		exportString += "\r\nEntries: ";
 
-		for (int i = 0; i < m_aEntries.length; i++) {
+		for (int i = 0; i < NUMBER_OF_TRIALS; i++) {
 			exportString += m_aEntries[i] + ", ";
 		}
 
