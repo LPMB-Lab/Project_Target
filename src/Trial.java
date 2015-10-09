@@ -14,6 +14,11 @@ public class Trial {
 	private long m_iFastestReactionTime;
 
 	Trial() {
+		ResetTrials();
+		GenerateTrials();
+	}
+	
+	private void ResetTrials() {
 		for (int i = 0; i < NUMBER_OF_TRIALS; i++) {
 			m_aResponseTimers[i] = 0;
 		}
@@ -25,8 +30,6 @@ public class Trial {
 		for (int i = 0; i < NUMBER_OF_TRIALS; i++) {
 			m_aPoints[i] = 0;
 		}
-
-		GenerateTrials();
 	}
 
 	private void GenerateTrials() {
@@ -79,7 +82,7 @@ public class Trial {
 	}
 
 	public int getSize() {
-		return m_aEntries.length;
+		return NUMBER_OF_TRIALS;
 	}
 
 	public String getExportString() {

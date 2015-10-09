@@ -60,12 +60,9 @@ class drawWindow extends JPanel implements MouseListener {
 		addMouseListener(this);
 
 		try {
-			restartButton = new Button(ImageIO.read(getClass().getResource(
-					"images/restartButton.png")), 5, 5);
-			saveButton = new Button(ImageIO.read(getClass().getResource(
-					"images/saveButton.png")), 100, 5);
-			quitButton = new Button(ImageIO.read(getClass().getResource(
-					"images/quitButton.png")), 195, 5);
+			restartButton = new Button(ImageIO.read(getClass().getResource("images/restartButton.png")), 5, 5);
+			saveButton = new Button(ImageIO.read(getClass().getResource("images/saveButton.png")), 100, 5);
+			quitButton = new Button(ImageIO.read(getClass().getResource("images/quitButton.png")), 195, 5);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -87,9 +84,8 @@ class drawWindow extends JPanel implements MouseListener {
 
 		for (int i = 0; i < WIDTH_TARGETS; i++) {
 			for (int j = 0; j < LENGTH_TARGETS; j++) {
-				Target myTarget = new Target((1 + i * 2) * 100
-						/ (WIDTH_TARGETS * 2), (1 + j * 2) * 100
-						/ (LENGTH_TARGETS * 2));
+				Target myTarget = new Target((1 + i * 2) * 100 / (WIDTH_TARGETS * 2),
+						(1 + j * 2) * 100 / (LENGTH_TARGETS * 2));
 				m_aTargets.add(myTarget);
 			}
 		}
@@ -98,10 +94,8 @@ class drawWindow extends JPanel implements MouseListener {
 	private void doDrawing(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
 
-		rh = new RenderingHints(RenderingHints.KEY_ANTIALIASING,
-				RenderingHints.VALUE_ANTIALIAS_ON);
-		rh.put(RenderingHints.KEY_RENDERING,
-				RenderingHints.VALUE_RENDER_QUALITY);
+		rh = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		rh.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
 		g2d.setRenderingHints(rh);
 
 		g2d.setFont(new Font("TimesRoman", Font.PLAIN, 30));
@@ -115,45 +109,35 @@ class drawWindow extends JPanel implements MouseListener {
 			g2d.setColor(Color.GRAY);
 			break;
 		case COMPLETED:
-			g2d.drawString(
-					"The test is complete! Thank you for participating!", 5,
-					STATE_POSITION + 100);
+			g2d.drawString("The test is complete! Thank you for participating!", 5, STATE_POSITION + 100);
 			break;
 		default:
 			break;
 		}
 
 		// Create Start Circle
-		g2d.fillOval((int) (screenWidth * 0.1 - CIRCLE_DIAMETER),
-				(int) (screenHeight * 0.5 - CIRCLE_DIAMETER), CIRCLE_DIAMETER,
-				CIRCLE_DIAMETER);
-		
+		g2d.fillOval((int) (screenWidth * 0.1 - CIRCLE_DIAMETER), (int) (screenHeight * 0.5 - CIRCLE_DIAMETER),
+				CIRCLE_DIAMETER, CIRCLE_DIAMETER);
+
 		// Create Labels
 		g2d.setColor(Color.BLUE);
-		g2d.drawString("CURRENT TARGET: " + (m_iCurrentTrialStep + 1) + "/36",
-				5, 75);
+		g2d.drawString("CURRENT TARGET: " + (m_iCurrentTrialStep + 1) + "/36", 5, 75);
 		g2d.drawString("POINTS: " + m_iPoints, 5, 105);
-		
+
 		// Creating Buttons
-		g2d.drawImage(restartButton.getImage(), restartButton.getX(),
-				restartButton.getY(), null);
-		g2d.drawImage(quitButton.getImage(), quitButton.getX(),
-				quitButton.getY(), null);
-		g2d.drawImage(saveButton.getImage(), saveButton.getX(),
-				saveButton.getY(), null);
+		g2d.drawImage(restartButton.getImage(), restartButton.getX(), restartButton.getY(), null);
+		g2d.drawImage(quitButton.getImage(), quitButton.getX(), quitButton.getY(), null);
+		g2d.drawImage(saveButton.getImage(), saveButton.getX(), saveButton.getY(), null);
 
 		// Create targets but only fill the one that is required to be
 		g2d.setColor(Color.YELLOW);
 		for (int i = 0; i < m_aTargets.size(); i++) {
 			if (m_aTargets.get(i).isFill()) {
-				g2d.fillOval((int) (m_aTargets.get(i).getX()
-						* (screenWidth - screenWidth * 0.25) / 100
-						- CIRCLE_DIAMETER / 2 + screenWidth * 0.25), m_aTargets
-						.get(i).getY()
-						* screenHeight
-						/ 100
-						- CIRCLE_DIAMETER
-						/ 2, CIRCLE_DIAMETER, CIRCLE_DIAMETER);
+				g2d.fillOval(
+						(int) (m_aTargets.get(i).getX() * (screenWidth - screenWidth * 0.25) / 100 - CIRCLE_DIAMETER / 2
+								+ screenWidth * 0.25),
+						m_aTargets.get(i).getY() * screenHeight / 100 - CIRCLE_DIAMETER / 2, CIRCLE_DIAMETER,
+						CIRCLE_DIAMETER);
 			}
 		}
 	}
@@ -182,8 +166,7 @@ class drawWindow extends JPanel implements MouseListener {
 			}
 
 			if (m_State == State.WAIT_FOR_PRESS) {
-				m_aTargets.get(m_Trial.getElementAt(m_iCurrentTrialStep))
-						.setFill(true);
+				m_aTargets.get(m_Trial.getElementAt(m_iCurrentTrialStep)).setFill(true);
 				UpdateGraphics();
 				m_lStartTime = new Date().getTime();
 				System.out.println("WAIT FOR PRESS");
@@ -204,12 +187,8 @@ class drawWindow extends JPanel implements MouseListener {
 
 	private boolean isReadyPressed(int x, int y) {
 		System.out.println("Ready Pressed");
-		if ((int) Math
-				.sqrt(Math.pow((x + CIRCLE_DIAMETER / 2 - (screenWidth * 0.1)),
-						2)
-						+ Math.pow(
-								(y + CIRCLE_DIAMETER / 2 - (screenHeight * 0.5)),
-								2)) < CIRCLE_DIAMETER / 2)
+		if ((int) Math.sqrt(Math.pow((x + CIRCLE_DIAMETER / 2 - (screenWidth * 0.1)), 2)
+				+ Math.pow((y + CIRCLE_DIAMETER / 2 - (screenHeight * 0.5)), 2)) < CIRCLE_DIAMETER / 2)
 			return true;
 		else
 			return false;
@@ -221,8 +200,7 @@ class drawWindow extends JPanel implements MouseListener {
 		int y = e.getY();
 
 		if (quitButton.isPressed(x, y)) {
-			int dialogResult = JOptionPane.showConfirmDialog(null,
-					"Are you sure you want to quit?", "Warning",
+			int dialogResult = JOptionPane.showConfirmDialog(null, "Are you sure you want to quit?", "Warning",
 					JOptionPane.YES_NO_OPTION);
 
 			if (dialogResult == JOptionPane.YES_OPTION)
@@ -233,15 +211,16 @@ class drawWindow extends JPanel implements MouseListener {
 			ExportFile();
 		} else if (m_State == State.READY) {
 			if (isReadyPressed(e.getX(), e.getY())) {
-				// Set the cheat option to false as soon as the ready button is pressed
+				// Set the cheat option to false as soon as the ready button is
+				// pressed
 				m_bIsCheat = false;
-				
+
 				// Make the target appear within 1800 - 2000 ms
-				countDownToState(new Random().nextInt(1800) + 200,
-						State.WAIT_FOR_PRESS);
+				countDownToState(new Random().nextInt(1800) + 200, State.WAIT_FOR_PRESS);
 			}
 		} else if (m_State == State.WAIT_FOR_PRESS) {
-			// If we are waiting for a press, check for contact with the active target
+			// If we are waiting for a press, check for contact with the active
+			// target
 			CheckClick(x, y, m_Trial.getElementAt(m_iCurrentTrialStep));
 		}
 
@@ -255,27 +234,23 @@ class drawWindow extends JPanel implements MouseListener {
 	}
 
 	private void ExportFile() {
-		
+
 		JTextField fileNameInput = new JTextField();
 		String CompletionString = "Please enter File Name";
 
 		if (m_State != State.COMPLETED)
 			CompletionString += " (Trial is Unfinished)";
 
-		final JComponent[] inputs = new JComponent[] {
-				new JLabel(CompletionString), fileNameInput };
-		int dialogResult = JOptionPane.showConfirmDialog(null, inputs,
-				"Save File", JOptionPane.OK_CANCEL_OPTION);
+		final JComponent[] inputs = new JComponent[] { new JLabel(CompletionString), fileNameInput };
+		int dialogResult = JOptionPane.showConfirmDialog(null, inputs, "Save File", JOptionPane.OK_CANCEL_OPTION);
 
 		if (dialogResult == JOptionPane.YES_OPTION) {
 			try {
-				DateFormat dateFormat = new SimpleDateFormat(
-						"yyyy_MM_dd HH_mm_ss");
+				DateFormat dateFormat = new SimpleDateFormat("yyyy_MM_dd HH_mm_ss");
 				Date date = new Date();
 				String fileName = "";
 
-				fileName = dateFormat.format(date) + "_NON_NAMED_TRIAL"
-						+ ".txt";
+				fileName = dateFormat.format(date) + "_NON_NAMED_TRIAL" + ".txt";
 
 				PrintWriter writer = new PrintWriter(fileName, "UTF-8");
 				String exportString = m_Trial.getExportString();
@@ -295,25 +270,23 @@ class drawWindow extends JPanel implements MouseListener {
 		long lEndTime = new Date().getTime();
 		long diffTime = lEndTime - m_lStartTime;
 		m_Trial.setResponseTimer(m_iCurrentTrialStep, diffTime);
-		
+
 		// Calculate click accuracy
-		int xTarget = (int) (m_aTargets.get(TargetID).getX()
-				* (screenWidth - screenWidth * 0.25) / 100 + screenWidth * 0.25);
+		int xTarget = (int) (m_aTargets.get(TargetID).getX() * (screenWidth - screenWidth * 0.25) / 100
+				+ screenWidth * 0.25);
 		int yTarget = m_aTargets.get(TargetID).getY() * screenHeight / 100;
-		int z = (int) Math.sqrt(Math.pow(x - xTarget, 2)
-				+ Math.pow(y - yTarget, 2));
+		int z = (int) Math.sqrt(Math.pow(x - xTarget, 2) + Math.pow(y - yTarget, 2));
 
 		if (diffTime < 2000 && diffTime > 50 && !m_bIsCheat) {
 			if (z < CIRCLE_DIAMETER / 2) {
 				// If direct shot, add one point to score
 				m_iPoints += 1;
-			}
-			else if (z < CIRCLE_DIAMETER * 1.25 / 2) {
+			} else if (z < CIRCLE_DIAMETER * 1.25 / 2) {
 				// If 125% of radius, add 0.5 points
 				m_iPoints += 0.5;
 			}
 		}
-		
+
 		// If last target then set to complete, if not then increment trial step
 		if (m_iCurrentTrialStep == LENGTH_TARGETS * WIDTH_TARGETS - 1)
 			m_State = State.COMPLETED;
@@ -340,7 +313,9 @@ class drawWindow extends JPanel implements MouseListener {
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		if (m_State == State.COUNTDOWN) {
-			// If the mouse is released during countdown, it means the user released finger before the target appeared therefore it is a cheat
+			// If the mouse is released during countdown, it means the user
+			// released finger before the target appeared therefore it is a
+			// cheat
 			m_bIsCheat = true;
 			System.out.println("CHEATING");
 		}
@@ -353,4 +328,3 @@ class drawWindow extends JPanel implements MouseListener {
 	public void mouseClicked(MouseEvent e) {
 	}
 }
-
