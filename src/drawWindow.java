@@ -71,8 +71,9 @@ class drawWindow extends JPanel implements MouseListener {
 	}
 
 	private void Reset() {
-		if (m_Timer != null)
+		if (m_Timer != null) {
 			m_Timer.cancel();
+		}
 
 		m_State = State.READY;
 		m_aTargets = new ArrayList<Target>();
@@ -157,9 +158,9 @@ class drawWindow extends JPanel implements MouseListener {
 			}
 
 			if (m_State == State.COUNTDOWN) {
-				if (m_iGlobalTimer <= 0)
+				if (m_iGlobalTimer <= 0) {
 					m_State = state;
-				else {
+				} else {
 					m_Timer.schedule(new updateTask(state), 100);
 					m_iGlobalTimer -= 100;
 				}
@@ -181,17 +182,16 @@ class drawWindow extends JPanel implements MouseListener {
 	}
 
 	private void clearCircles() {
-		for (int i = 0; i < m_aTargets.size(); i++)
+		for (int i = 0; i < m_aTargets.size(); i++) {
 			m_aTargets.get(i).setFill(false);
+		}
 	}
 
 	private boolean isReadyPressed(int x, int y) {
 		System.out.println("Ready Pressed");
-		if ((int) Math.sqrt(Math.pow((x + CIRCLE_DIAMETER / 2 - (screenWidth * 0.1)), 2)
-				+ Math.pow((y + CIRCLE_DIAMETER / 2 - (screenHeight * 0.5)), 2)) < CIRCLE_DIAMETER / 2)
-			return true;
-		else
-			return false;
+
+		return ((int) Math.sqrt(Math.pow((x + CIRCLE_DIAMETER / 2 - (screenWidth * 0.1)), 2)
+				+ Math.pow((y + CIRCLE_DIAMETER / 2 - (screenHeight * 0.5)), 2)) < CIRCLE_DIAMETER / 2);
 	}
 
 	@Override
@@ -203,8 +203,9 @@ class drawWindow extends JPanel implements MouseListener {
 			int dialogResult = JOptionPane.showConfirmDialog(null, "Are you sure you want to quit?", "Warning",
 					JOptionPane.YES_NO_OPTION);
 
-			if (dialogResult == JOptionPane.YES_OPTION)
+			if (dialogResult == JOptionPane.YES_OPTION) {
 				System.exit(0);
+			}
 		} else if (restartButton.isPressed(x, y)) {
 			Reset();
 		} else if (saveButton.isPressed(x, y)) {
@@ -238,8 +239,9 @@ class drawWindow extends JPanel implements MouseListener {
 		JTextField fileNameInput = new JTextField();
 		String CompletionString = "Please enter File Name";
 
-		if (m_State != State.COMPLETED)
+		if (m_State != State.COMPLETED) {
 			CompletionString += " (Trial is Unfinished)";
+		}
 
 		final JComponent[] inputs = new JComponent[] { new JLabel(CompletionString), fileNameInput };
 		int dialogResult = JOptionPane.showConfirmDialog(null, inputs, "Save File", JOptionPane.OK_CANCEL_OPTION);
@@ -288,9 +290,9 @@ class drawWindow extends JPanel implements MouseListener {
 		}
 
 		// If last target then set to complete, if not then increment trial step
-		if (m_iCurrentTrialStep == LENGTH_TARGETS * WIDTH_TARGETS - 1)
+		if (m_iCurrentTrialStep == LENGTH_TARGETS * WIDTH_TARGETS - 1) {
 			m_State = State.COMPLETED;
-		else {
+		} else {
 			m_State = State.READY;
 			m_iCurrentTrialStep++;
 		}
