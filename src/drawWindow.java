@@ -43,13 +43,23 @@ class drawWindow extends JPanel implements MouseListener {
 	ArrayList<Target> m_aTargets;
 
 	Timer m_Timer;
+	
+	// Buttons
 	Button restartButton;
 	Button quitButton;
 	Button saveButton;
 
-	long m_lStartTime;
+	// Timers for each of the measurements
+	long m_lResponseStartTime;
+	long m_lReactionStartTime;
+	
+	// Timer for the global timer
 	int m_iGlobalTimer;
+	
+	// Points counter
 	double m_iPoints;
+	
+	// Cheating check
 	boolean m_bIsCheat;
 
 	public drawWindow() {
@@ -152,15 +162,20 @@ class drawWindow extends JPanel implements MouseListener {
 
 		@Override
 		public void run() {
+			
+			// Instant switch or something?
 			if (m_State != State.COUNTDOWN) {
 				m_State = state;
 				System.out.println("STATE IS: " + m_State);
 			}
 
+			// If the state is still in countdown decrement the global timer
 			if (m_State == State.COUNTDOWN) {
 				if (m_iGlobalTimer <= 0) {
+					// If Global timer ready, switch state
 					m_State = state;
 				} else {
+					// If global timer not ready, decrement by 100 and do it again
 					m_Timer.schedule(new updateTask(state), 100);
 					m_iGlobalTimer -= 100;
 				}
@@ -169,7 +184,10 @@ class drawWindow extends JPanel implements MouseListener {
 			if (m_State == State.WAIT_FOR_PRESS) {
 				m_aTargets.get(m_Trial.getElementAt(m_iCurrentTrialStep)).setFill(true);
 				UpdateGraphics();
-				m_lStartTime = new Date().getTime();
+				
+				// Start timer for response/reaction timer as soon as target appears
+				m_lResponseStartTime = new Date().getTime();
+				m_lReactionStartTime = new Date().getTime();
 				System.out.println("WAIT FOR PRESS");
 			}
 		}
@@ -252,7 +270,7 @@ class drawWindow extends JPanel implements MouseListener {
 				Date date = new Date();
 				String fileName = "";
 
-				fileName = dateFormat.format(date) + "_NON_NAMED_TRIAL" + ".txt";
+				fileName = dateFormat.format(date) + (fileNameInput.getText().equals("") ? "_NON_NAMED_TRIAL" : fileNameInput.getText()) + ".txt";
 
 				PrintWriter writer = new PrintWriter(fileName, "UTF-8");
 				String exportString = m_Trial.getExportString();
@@ -270,7 +288,7 @@ class drawWindow extends JPanel implements MouseListener {
 	private void CheckClick(int x, int y, int TargetID) {
 		// Calculate the Response TImer
 		long lEndTime = new Date().getTime();
-		long diffTime = lEndTime - m_lStartTime;
+		long diffTime = lEndTime - m_lResponseStartTime;
 		m_Trial.setResponseTimer(m_iCurrentTrialStep, diffTime);
 
 		// Calculate click accuracy
@@ -279,6 +297,7 @@ class drawWindow extends JPanel implements MouseListener {
 		int yTarget = m_aTargets.get(TargetID).getY() * screenHeight / 100;
 		int z = (int) Math.sqrt(Math.pow(x - xTarget, 2) + Math.pow(y - yTarget, 2));
 
+		// No points if cheating right now
 		if (diffTime < 2000 && diffTime > 50 && !m_bIsCheat) {
 			if (z < CIRCLE_DIAMETER / 2) {
 				// If direct shot, add one point to score
@@ -320,6 +339,12 @@ class drawWindow extends JPanel implements MouseListener {
 			// cheat
 			m_bIsCheat = true;
 			System.out.println("CHEATING");
+		} else if (m_State == State.WAIT_FOR_PRESS) {
+			System.out.println("SET REACTION TIME");
+			// Calculate the Response TImer
+			long lEndTime = new Date().getTime();
+			long diffTime = lEndTime - m_lReactionStartTime;
+			m_Trial.setReactionTimer(m_iCurrentTrialStep, diffTime);
 		}
 
 		clearCircles();
