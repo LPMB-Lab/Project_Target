@@ -3,12 +3,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class Trial {
-	
+
 	private int NUMBER_OF_TRIALS = 36;
-	
+
 	private int[] m_aEntries = new int[NUMBER_OF_TRIALS];
 	private long[] m_aResponseTimers = new long[NUMBER_OF_TRIALS];
-	private long[] m_aReactionTimers = new long [NUMBER_OF_TRIALS];
+	private long[] m_aReactionTimers = new long[NUMBER_OF_TRIALS];
 	private float[] m_aPoints = new float[NUMBER_OF_TRIALS];
 	private long m_iFastestResponseTime;
 	private long m_iFastestReactionTime;
@@ -17,16 +17,16 @@ public class Trial {
 		ResetTrials();
 		GenerateTrials();
 	}
-	
+
 	private void ResetTrials() {
 		for (int i = 0; i < NUMBER_OF_TRIALS; i++) {
 			m_aResponseTimers[i] = 0;
 		}
-		
+
 		for (int i = 0; i < NUMBER_OF_TRIALS; i++) {
 			m_aReactionTimers[i] = 0;
 		}
-		
+
 		for (int i = 0; i < NUMBER_OF_TRIALS; i++) {
 			m_aPoints[i] = 0;
 		}
@@ -48,7 +48,7 @@ public class Trial {
 
 	public void setResponseTimer(int step, long responseTime) {
 		m_aResponseTimers[step] = responseTime;
-		
+
 		if (step == 0) {
 			// On the first step set the fastest time
 			m_iFastestResponseTime = responseTime;
@@ -59,10 +59,10 @@ public class Trial {
 			}
 		}
 	}
-	
+
 	public void setReactionTimer(int step, long reactionTime) {
 		m_aReactionTimers[step] = reactionTime;
-		
+
 		if (step == 0) {
 			// On the first step set the fastest time
 			m_iFastestReactionTime = reactionTime;
@@ -72,7 +72,7 @@ public class Trial {
 			}
 		}
 	}
-	
+
 	public void setPoints(int step, float points) {
 		m_aPoints[step] = points;
 	}
@@ -91,13 +91,13 @@ public class Trial {
 		for (int i = 0; i < NUMBER_OF_TRIALS; i++) {
 			exportString += m_aResponseTimers[i] + ", ";
 		}
-		
+
 		exportString += "\r\nReaction Timings (ms): ";
-		
+
 		for (int i = 0; i < NUMBER_OF_TRIALS; i++) {
 			exportString += m_aReactionTimers[i] + ", ";
 		}
-		
+
 		exportString += "\r\nEntries: ";
 
 		for (int i = 0; i < NUMBER_OF_TRIALS; i++) {
