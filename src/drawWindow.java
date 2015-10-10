@@ -270,7 +270,7 @@ class drawWindow extends JPanel implements MouseListener {
 				Date date = new Date();
 				String fileName = "";
 
-				fileName = dateFormat.format(date) + (fileNameInput.getText().equals("") ? "_NON_NAMED_TRIAL" : "_" + fileNameInput.getText()) + ".txt";
+				fileName = dateFormat.format(date) + (fileNameInput.getText().equals("") ? "_NON_NAMED_TRIAL" : "_ID" + fileNameInput.getText()) + ".txt";
 
 				PrintWriter writer = new PrintWriter(fileName, "UTF-8");
 				String exportString = m_Trial.getExportString();
