@@ -300,6 +300,7 @@ class drawWindow extends JPanel implements MouseListener {
 		if (m_bIsCheat) {
 			// If cheat then push trial back once
 			m_State = State.READY;
+			m_Trial.pushBackTrial(m_iCurrentTrialStep);
 		} else {
 			if (z < CIRCLE_DIAMETER / 2) {
 				// If direct shot, add one point to score
