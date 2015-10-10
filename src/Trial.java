@@ -72,6 +72,10 @@ public class Trial {
 			}
 		}
 	}
+	
+	public void pushBackCurrentTrial() {
+		
+	}
 
 	public void setPoints(int step, float points) {
 		m_aPoints[step] = points;

@@ -296,9 +296,11 @@ class drawWindow extends JPanel implements MouseListener {
 				+ screenWidth * 0.25);
 		int yTarget = m_aTargets.get(TargetID).getY() * screenHeight / 100;
 		int z = (int) Math.sqrt(Math.pow(x - xTarget, 2) + Math.pow(y - yTarget, 2));
-
-		// No points if cheating right now
-		if (diffTime < 2000 && diffTime > 50 && !m_bIsCheat) {
+		
+		if (m_bIsCheat) {
+			// If cheat then push trial back once
+			m_State = State.READY;
+		} else {
 			if (z < CIRCLE_DIAMETER / 2) {
 				// If direct shot, add one point to score
 				m_iPoints += 1;
@@ -306,14 +308,14 @@ class drawWindow extends JPanel implements MouseListener {
 				// If 125% of radius, add 0.5 points
 				m_iPoints += 0.5;
 			}
-		}
-
-		// If last target then set to complete, if not then increment trial step
-		if (m_iCurrentTrialStep == LENGTH_TARGETS * WIDTH_TARGETS - 1) {
-			m_State = State.COMPLETED;
-		} else {
-			m_State = State.READY;
-			m_iCurrentTrialStep++;
+			
+			// If last target then set to complete, if not then increment trial step
+			if (m_iCurrentTrialStep == LENGTH_TARGETS * WIDTH_TARGETS - 1) {
+				m_State = State.COMPLETED;
+			} else {
+				m_State = State.READY;
+				m_iCurrentTrialStep++;
+			}
 		}
 	}
 
