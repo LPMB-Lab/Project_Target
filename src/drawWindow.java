@@ -342,7 +342,6 @@ class drawWindow extends JPanel implements MouseListener {
 			m_bIsCheat = true;
 			System.out.println("CHEATING");
 		} else if (m_State == State.WAIT_FOR_PRESS) {
-			System.out.println("SET REACTION TIME");
 			// Calculate the Response TImer
 			long lEndTime = new Date().getTime();
 			long diffTime = lEndTime - m_lReactionStartTime;

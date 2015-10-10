@@ -73,8 +73,11 @@ public class Trial {
 		}
 	}
 	
-	public void pushBackCurrentTrial() {
-		
+	public void pushBackTrial(int step) {
+		// What we are going to do here is swap the step trial with the last trial
+		int tempStore = m_aEntries[step];
+		m_aEntries[step] = m_aEntries[NUMBER_OF_TRIALS-1];
+		m_aEntries[NUMBER_OF_TRIALS-1] = tempStore;
 	}
 
 	public void setPoints(int step, float points) {
