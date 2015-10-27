@@ -206,8 +206,6 @@ class drawWindow extends JPanel implements MouseListener {
 	}
 
 	private boolean isReadyPressed(int x, int y) {
-		System.out.println("Ready Pressed");
-
 		return ((int) Math.sqrt(Math.pow((x + CIRCLE_DIAMETER / 2 - (screenWidth * 0.1)), 2)
 				+ Math.pow((y + CIRCLE_DIAMETER / 2 - (screenHeight * 0.5)), 2)) < CIRCLE_DIAMETER / 2);
 	}
