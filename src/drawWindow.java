@@ -101,7 +101,7 @@ class drawWindow extends JPanel implements MouseListener {
 			m_Timer.cancel();
 		}
 
-		// Initial state should be reayd
+		// Initial state should be ready
 		m_State = State.READY;
 		
 		// Wipe all current variables
