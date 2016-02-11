@@ -94,19 +94,21 @@ public class Trial {
 
 	public String getExportString() {
 		String exportString = "Response Timings (ms): ";
-
 		for (int i = 0; i < NUMBER_OF_TRIALS; i++) {
 			exportString += m_aResponseTimers[i] + ", ";
 		}
 
 		exportString += "\r\nReaction Timings (ms): ";
-
 		for (int i = 0; i < NUMBER_OF_TRIALS; i++) {
 			exportString += m_aReactionTimers[i] + ", ";
 		}
 
-		exportString += "\r\nEntries: ";
+		exportString += "\r\nPoints: ";
+		for (int i = 0; i < NUMBER_OF_TRIALS; i++) {
+			exportString += m_aPoints[i] + ", ";
+		}
 
+		exportString += "\r\nEntries: ";
 		for (int i = 0; i < NUMBER_OF_TRIALS; i++) {
 			exportString += m_aEntries[i] + ", ";
 		}

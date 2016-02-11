@@ -29,19 +29,31 @@ class drawWindow extends JPanel implements MouseListener {
 
 	private static final long serialVersionUID = 1L;
 	private static final int CIRCLE_DIAMETER = 100;
+	// Arbitrary spacing tool for labels
 	private static final int STATE_POSITION = 105;
+	
+	// Length and width of targets (6x6 would mean 36 targets)
 	private static final int LENGTH_TARGETS = 6;
 	private static final int WIDTH_TARGETS = 6;
 
+	// Variables to hold the screen width/height to allow the program to adjust to resizing
 	int screenWidth;
 	int screenHeight;
 	RenderingHints rh;
 
+	// Store current state, see Enum State
 	State m_State;
+	
+	// Current Trial
 	Trial m_Trial;
+	
+	// Current Trials Step
 	int m_iCurrentTrialStep;
+	
+	// Array to hold Targets
 	ArrayList<Target> m_aTargets;
 
+	// Manual timer set to update state times
 	Timer m_Timer;
 	
 	// Buttons
@@ -49,7 +61,9 @@ class drawWindow extends JPanel implements MouseListener {
 	Button quitButton;
 	Button saveButton;
 
-	// Timers for each of the measurements
+	// Timers for each of the measurements, 
+	// Response Timer is how long it takes from finger lift to pressing target
+	// Reaction Timer is how long it takes from target show to finger lift
 	long m_lResponseStartTime;
 	long m_lReactionStartTime;
 	
@@ -63,6 +77,7 @@ class drawWindow extends JPanel implements MouseListener {
 	boolean m_bIsCheat;
 
 	public drawWindow() {
+		// Set screen width and height
 		screenWidth = Toolkit.getDefaultToolkit().getScreenSize().width;
 		screenHeight = Toolkit.getDefaultToolkit().getScreenSize().height;
 		setBackground(Color.BLACK);
@@ -81,11 +96,15 @@ class drawWindow extends JPanel implements MouseListener {
 	}
 
 	private void Reset() {
+		// Reset Timer
 		if (m_Timer != null) {
 			m_Timer.cancel();
 		}
 
+		// Initial state should be reayd
 		m_State = State.READY;
+		
+		// Wipe all current variables
 		m_aTargets = new ArrayList<Target>();
 		m_Trial = new Trial();
 		m_Timer = new Timer();
@@ -93,6 +112,7 @@ class drawWindow extends JPanel implements MouseListener {
 		m_iGlobalTimer = 0;
 		m_iPoints = 0;
 
+		// Generate new targets and add them to target list
 		for (int i = 0; i < WIDTH_TARGETS; i++) {
 			for (int j = 0; j < LENGTH_TARGETS; j++) {
 				Target myTarget = new Target((1 + i * 2) * 100 / (WIDTH_TARGETS * 2),
@@ -108,22 +128,21 @@ class drawWindow extends JPanel implements MouseListener {
 		rh = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		rh.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
 		g2d.setRenderingHints(rh);
-
 		g2d.setFont(new Font("TimesRoman", Font.PLAIN, 30));
 
 		switch (m_State) {
-		case READY:
-			g2d.setColor(Color.GREEN);
-			break;
-		case COUNTDOWN:
-		case WAIT_FOR_PRESS:
-			g2d.setColor(Color.GRAY);
-			break;
-		case COMPLETED:
-			g2d.drawString("The test is complete! Thank you for participating!", 5, STATE_POSITION + 100);
-			break;
-		default:
-			break;
+			case READY:
+				g2d.setColor(Color.GREEN);
+				break;
+			case COUNTDOWN:
+			case WAIT_FOR_PRESS:
+				g2d.setColor(Color.GRAY);
+				break;
+			case COMPLETED:
+				g2d.drawString("The test is complete! Thank you for participating!", 5, STATE_POSITION + 100);
+				break;
+			default:
+				break;
 		}
 
 		// Create Start Circle
@@ -132,7 +151,7 @@ class drawWindow extends JPanel implements MouseListener {
 
 		// Create Labels
 		g2d.setColor(Color.BLUE);
-		g2d.drawString("CURRENT TARGET: " + (m_iCurrentTrialStep + 1) + "/36", 5, 75);
+		g2d.drawString("CURRENT TARGET: " + (m_iCurrentTrialStep + 1) + "/" + LENGTH_TARGETS * WIDTH_TARGETS, 5, 75);
 		g2d.drawString("POINTS: " + m_iPoints, 5, 105);
 
 		// Creating Buttons
@@ -303,9 +322,11 @@ class drawWindow extends JPanel implements MouseListener {
 			if (z < CIRCLE_DIAMETER / 2) {
 				// If direct shot, add one point to score
 				m_iPoints += 1;
+				m_Trial.setPoints(m_iCurrentTrialStep, (float) 1.0 );
 			} else if (z < CIRCLE_DIAMETER * 1.25 / 2) {
 				// If 125% of radius, add 0.5 points
 				m_iPoints += 0.5;
+				m_Trial.setPoints(m_iCurrentTrialStep, (float) 0.5);
 			}
 			
 			// If last target then set to complete, if not then increment trial step
