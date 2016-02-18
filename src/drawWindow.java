@@ -283,7 +283,7 @@ class drawWindow extends JPanel implements MouseListener {
 
 		if (dialogResult == JOptionPane.YES_OPTION) {
 			try {
-				PrintWriter writer = new PrintWriter(fileName, "UTF-8");
+				PrintWriter writer = new PrintWriter(fileName + ".txt", "UTF-8");
 				String exportString = m_Trial.getExportString();
 
 				writer.println(exportString);
