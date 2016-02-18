@@ -271,24 +271,20 @@ class drawWindow extends JPanel implements MouseListener {
 
 	private void ExportFile() {
 
-		JTextField fileNameInput = new JTextField();
-		String CompletionString = "Please enter File Name";
+		//JTextField fileNameInput = new JTextField();
+		String CompletionString = "Save Results?";
 
 		if (m_State != State.COMPLETED) {
 			CompletionString += " (Trial is Unfinished)";
 		}
 
-		final JComponent[] inputs = new JComponent[] { new JLabel(CompletionString), fileNameInput };
+		String fileName = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss").format(new Date());
+
+		final JComponent[] inputs = new JComponent[] { new JLabel(CompletionString), new JLabel(fileName) };
 		int dialogResult = JOptionPane.showConfirmDialog(null, inputs, "Save File", JOptionPane.OK_CANCEL_OPTION);
 
 		if (dialogResult == JOptionPane.YES_OPTION) {
 			try {
-				DateFormat dateFormat = new SimpleDateFormat("yyyy_MM_dd HH_mm_ss");
-				Date date = new Date();
-				String fileName = "";
-
-				fileName = dateFormat.format(date) + (fileNameInput.getText().equals("") ? "_NON_NAMED_TRIAL" : "_ID" + fileNameInput.getText()) + ".txt";
-
 				PrintWriter writer = new PrintWriter(fileName, "UTF-8");
 				String exportString = m_Trial.getExportString();
 
