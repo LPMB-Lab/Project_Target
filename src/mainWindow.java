@@ -12,6 +12,7 @@ public class mainWindow extends JFrame {
 		add(new drawWindow());
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setUndecorated(true);
 		setLocationRelativeTo(null);
 		setVisible(true);
 	}
