@@ -23,24 +23,17 @@ Entries: 32, 19, 18, 6, 11, 30, 31, 21, 13, 17, 35, 20, 9, 12, 14, 7, 16, 3, 15,
 Fastest Response Time (ms): 949ms
 Fastest Reaction Time (ms): 443ms 
 ```
+| Output header | Description |
+| --- | --- |
+| Response Timings (ms) | How long it takes from finger lift to pressing target |
+| Reaction Timings (ms) | How long it takes from target show to finger lift |
+| Points | The points accumulated for the trial, refer to table below for point legend |
+| Entries | Targets are enumerated from 1 to 36, this shows which target was presented. This is included if the researcher is looking to compare one users trials to another. For example data analysis can be done on multiple export files to see if entries 1-10 were pressed with more accuracy by ALL user |
+| Fastest Response Time | Fastest Response time recorded |
+| Fastest Reaction Time | Fastest Reaction time recorded |
 
-Response Timings (ms)
-- How long it takes from finger lift to pressing target
-
-Reaction Timings (ms)
-- How long it takes from target show to finger lift
-
-Points
-- The points accumulated for the trial, points are awarded as follows:
-1.0 - Direct hit in the taget
-0.5 - Non-direct hit, but within 125% of the radius
-0.0 - Missed and not within 125% of radius
-
-Entries
-- Targets are enumerated from 1 to 36, this shows which target was presented. This is included if the researcher is looking to compare one users trials to another. For example data analysis can be done on multiple export files to see if entries 1-10 were pressed with more accuracy by ALL users.
-
-Fastest Response Time
-- Fastest Response time recorded
-
-Fastest Reaction Time
-- Fastest Reaction time recorded
+| Points | Description |
+| --- | --- |
+| 1.0 | Direct hit in the target |
+| 0.5 | Non-direct hit, but within 125% of the radius |
+| 0.0 | Missed and not within 125% of radius |
