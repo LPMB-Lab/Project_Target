@@ -4,8 +4,9 @@ TargetAccuracyTask
 ### Description
 An accuracy task that requires a user to hold their finger on a start position before a series of targets appear and disappear when the user lifts his/her finger to press them.
 
-### Customizable Variables *Not Yet Implemented*
-*You can find the 'settings.txt' file with the following variables that can be changed to whatever suits your study*
+### Customizable Variables
+*!!Not Yet Implemented!!*
+- You can find the 'settings.txt' file with the following variables that can be changed to whatever suits your study
 
 | Variable name | Description | Default Value |
 | --- | --- | ------------- |
