@@ -1,6 +1,6 @@
 TargetAccuracyTask
 ==============
-
+![alt tag](http://i.imgur.com/CUy7x7P.jpg)
 ## Legend
 - [Description] (#description)
 - [Customizable Variables] (#customizable-variables)
