@@ -13,7 +13,8 @@ public class Trial {
 	private long m_iFastestResponseTime;
 	private long m_iFastestReactionTime;
 
-	Trial() {
+	Trial(int numberOfTrials) {
+	    NUMBER_OF_TRIALS = numberOfTrials;
 		ResetTrials();
 		GenerateTrials();
 	}

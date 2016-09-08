@@ -38,11 +38,11 @@ class drawWindow extends JPanel implements MouseListener {
 	private static final int LENGTH_TARGETS = 6;
 	private static final int WIDTH_TARGETS = 6;
 	private static final int CIRCLE_DIAMETER = 100;
+    private static final double SECONDARY_HIT_RADIUS = 1.25;
 
 	// Variables to hold the screen width/height to allow the program to adjust to resizing
     private int screenWidth;
     private int screenHeight;
-    private RenderingHints rh;
 
 	// Store current state, see Enum State
     private State m_State;
@@ -109,7 +109,7 @@ class drawWindow extends JPanel implements MouseListener {
 		
 		// Wipe all current variables
 		m_aTargets = new ArrayList<Target>();
-		m_Trial = new Trial();
+		m_Trial = new Trial(LENGTH_TARGETS * WIDTH_TARGETS);
 		m_Timer = new Timer();
 		m_iCurrentTrialStep = 0;
 		m_iGlobalTimer = 0;
@@ -128,7 +128,7 @@ class drawWindow extends JPanel implements MouseListener {
 	private void doDrawing(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
 
-		rh = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        RenderingHints rh = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		rh.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
 		g2d.setRenderingHints(rh);
 		g2d.setFont(new Font("TimesRoman", Font.PLAIN, 30));
@@ -303,7 +303,7 @@ class drawWindow extends JPanel implements MouseListener {
 	}
 
 	private void CheckClick(int x, int y, int TargetID) {
-		// Calculate the Response TImer
+		// Calculate the Response Timer
 		long lEndTime = new Date().getTime();
 		long diffTime = lEndTime - m_lResponseStartTime;
 		m_Trial.setResponseTimer(m_iCurrentTrialStep, diffTime);
@@ -323,7 +323,7 @@ class drawWindow extends JPanel implements MouseListener {
 				// If direct shot, add one point to score
 				m_iPoints += 1;
 				m_Trial.setPoints(m_iCurrentTrialStep, (float) 1.0 );
-			} else if (z < CIRCLE_DIAMETER * 1.25 / 2) {
+			} else if (z < CIRCLE_DIAMETER * SECONDARY_HIT_RADIUS / 2) {
 				// If 125% of radius, add 0.5 points
 				m_iPoints += 0.5;
 				m_Trial.setPoints(m_iCurrentTrialStep, (float) 0.5);
