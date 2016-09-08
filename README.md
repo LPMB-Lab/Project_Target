@@ -1,6 +1,11 @@
 TargetAccuracyTask
 ==============
 
+## Legend
+- [Description] (#description)
+- [Customizable Variables] (#customizable-variables)
+- [Output] (#output)
+
 ### Description
 An accuracy task that requires a user to hold their finger on a start position before a series of targets appear and disappear when the user lifts his/her finger to press them.
 
