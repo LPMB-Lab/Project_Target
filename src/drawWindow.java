@@ -26,55 +26,60 @@ import javax.swing.JPanel;
 class drawWindow extends JPanel implements MouseListener {
 
 	private static final long serialVersionUID = 1L;
-	private static final int CIRCLE_DIAMETER = 100;
+
 	// Arbitrary spacing tool for labels
 	private static final int STATE_POSITION = 105;
-	
+
+    /**
+     Customizable variables
+    **/
+
 	// Length and width of targets (6x6 would mean 36 targets)
 	private static final int LENGTH_TARGETS = 6;
 	private static final int WIDTH_TARGETS = 6;
+	private static final int CIRCLE_DIAMETER = 100;
 
 	// Variables to hold the screen width/height to allow the program to adjust to resizing
-	int screenWidth;
-	int screenHeight;
-	RenderingHints rh;
+    private int screenWidth;
+    private int screenHeight;
+    private RenderingHints rh;
 
 	// Store current state, see Enum State
-	State m_State;
+    private State m_State;
 	
 	// Current Trial
-	Trial m_Trial;
+    private Trial m_Trial;
 	
 	// Current Trials Step
-	int m_iCurrentTrialStep;
+    private int m_iCurrentTrialStep;
 	
 	// Array to hold Targets
-	ArrayList<Target> m_aTargets;
+    private ArrayList<Target> m_aTargets;
 
 	// Manual timer set to update state times
-	Timer m_Timer;
+    private Timer m_Timer;
 	
 	// Buttons
-	Button restartButton;
-	Button quitButton;
-	Button saveButton;
+    private Button restartButton;
+    private Button quitButton;
+    private Button saveButton;
 
 	// Timers for each of the measurements, 
 	// Response Timer is how long it takes from finger lift to pressing target
 	// Reaction Timer is how long it takes from target show to finger lift
-	long m_lResponseStartTime;
-	long m_lReactionStartTime;
+    private long m_lResponseStartTime;
+    private long m_lReactionStartTime;
 	
 	// Timer for the global timer
-	int m_iGlobalTimer;
+    private int m_iGlobalTimer;
 	
 	// Points counter
-	double m_iPoints;
+    private double m_iPoints;
 	
 	// Cheating check
-	boolean m_bIsCheat;
+	private boolean m_bIsCheat;
 
-	public drawWindow() {
+	drawWindow() {
 		// Set screen width and height
 		screenWidth = Toolkit.getDefaultToolkit().getScreenSize().width;
 		screenHeight = Toolkit.getDefaultToolkit().getScreenSize().height;
@@ -159,18 +164,19 @@ class drawWindow extends JPanel implements MouseListener {
 
 		// Create targets but only fill the one that is required to be
 		g2d.setColor(Color.YELLOW);
-		for (int i = 0; i < m_aTargets.size(); i++) {
-			if (m_aTargets.get(i).isFill()) {
-				g2d.fillOval(
-						(int) (m_aTargets.get(i).getX() * (screenWidth - screenWidth * 0.25) / 100 - CIRCLE_DIAMETER / 2
-								+ screenWidth * 0.25),
-						m_aTargets.get(i).getY() * screenHeight / 100 - CIRCLE_DIAMETER / 2, CIRCLE_DIAMETER,
-						CIRCLE_DIAMETER);
-			}
-		}
+
+		for (Target target : m_aTargets) {
+		    if (target.isFill()) {
+                g2d.fillOval(
+                        (int) (target.getX() * (screenWidth - screenWidth * 0.25) / 100 - CIRCLE_DIAMETER / 2
+                                + screenWidth * 0.25),
+                        target.getY() * screenHeight / 100 - CIRCLE_DIAMETER / 2, CIRCLE_DIAMETER,
+                        CIRCLE_DIAMETER);
+            }
+        }
 	}
 
-	class updateTask extends TimerTask {
+	private class updateTask extends TimerTask {
 		State state;
 
 		updateTask(State state) {
@@ -217,9 +223,9 @@ class drawWindow extends JPanel implements MouseListener {
 	}
 
 	private void clearCircles() {
-		for (int i = 0; i < m_aTargets.size(); i++) {
-			m_aTargets.get(i).setFill(false);
-		}
+		for (Target target : m_aTargets) {
+		    target.setFill(false);
+        }
 	}
 
 	private boolean isReadyPressed(int x, int y) {
