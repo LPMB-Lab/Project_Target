@@ -24,7 +24,7 @@ Entries: 32, 19, 18, 6, 11, 30, 31, 21, 13, 17, 35, 20, 9, 12, 14, 7, 16, 3, 15,
 Fastest Response Time (ms): 949ms
 Fastest Reaction Time (ms): 443ms 
 ```
-| Output header | Description |
+| Output  | Description |
 | --- | --- |
 | Response Timings (ms) | How long it takes from finger lift to pressing target |
 | Reaction Timings (ms) | How long it takes from target show to finger lift |
