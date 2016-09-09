@@ -7,7 +7,7 @@ public class mainWindow extends JFrame {
 		new mainWindow();
 	}
 
-	public mainWindow() {
+	mainWindow() {
 		setTitle("Project Target");
 		add(new drawWindow());
 		setExtendedState(JFrame.MAXIMIZED_BOTH);

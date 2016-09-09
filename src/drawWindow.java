@@ -16,6 +16,9 @@ import java.util.Date;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.util.Properties;
 
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
@@ -35,9 +38,9 @@ class drawWindow extends JPanel implements MouseListener {
     **/
 
 	// Length and width of targets (6x6 would mean 36 targets)
-	private static final int LENGTH_TARGETS = 6;
-	private static final int WIDTH_TARGETS = 6;
-	private static final int CIRCLE_DIAMETER = 100;
+	private int LENGTH_TARGETS = 6;
+	private int WIDTH_TARGETS = 6;
+	private int CIRCLE_DIAMETER = 100;
     private static final double SECONDARY_HIT_RADIUS = 1.25;
 
 	// Variables to hold the screen width/height to allow the program to adjust to resizing
@@ -87,6 +90,7 @@ class drawWindow extends JPanel implements MouseListener {
 		setSize(screenWidth, screenHeight);
 		addMouseListener(this);
 
+        // Initialize Buttons
 		try {
 			restartButton = new Button(ImageIO.read(getClass().getResource("images/restartButton.png")), 5, 5);
 			saveButton = new Button(ImageIO.read(getClass().getResource("images/saveButton.png")), 100, 5);
@@ -94,6 +98,32 @@ class drawWindow extends JPanel implements MouseListener {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
+		// Attempt to load settings from properties file
+        Properties prop = new Properties();
+        InputStream input = null;
+
+        try {
+            input = new FileInputStream("config.properties");
+
+            // load a properties file
+            prop.load(input);
+
+            LENGTH_TARGETS = Integer.parseInt(prop.getProperty("length_targets"));
+            WIDTH_TARGETS = Integer.parseInt(prop.getProperty("width_targets"));
+            CIRCLE_DIAMETER = Integer.parseInt(prop.getProperty("circle_diameter"));
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } finally {
+            if (input != null) {
+                try {
+                    input.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
 
 		Reset();
 	}
@@ -108,7 +138,7 @@ class drawWindow extends JPanel implements MouseListener {
 		m_State = State.READY;
 		
 		// Wipe all current variables
-		m_aTargets = new ArrayList<Target>();
+		m_aTargets = new ArrayList<>();
 		m_Trial = new Trial(LENGTH_TARGETS * WIDTH_TARGETS);
 		m_Timer = new Timer();
 		m_iCurrentTrialStep = 0;
@@ -165,15 +195,13 @@ class drawWindow extends JPanel implements MouseListener {
 		// Create targets but only fill the one that is required to be
 		g2d.setColor(Color.YELLOW);
 
-		for (Target target : m_aTargets) {
-		    if (target.isFill()) {
-                g2d.fillOval(
-                        (int) (target.getX() * (screenWidth - screenWidth * 0.25) / 100 - CIRCLE_DIAMETER / 2
-                                + screenWidth * 0.25),
-                        target.getY() * screenHeight / 100 - CIRCLE_DIAMETER / 2, CIRCLE_DIAMETER,
-                        CIRCLE_DIAMETER);
-            }
-        }
+        m_aTargets.stream().filter(Target::isFill).forEach(target -> {
+            g2d.fillOval(
+                    (int) (target.getX() * (screenWidth - screenWidth * 0.25) / 100 - CIRCLE_DIAMETER / 2
+                            + screenWidth * 0.25),
+                    target.getY() * screenHeight / 100 - CIRCLE_DIAMETER / 2, CIRCLE_DIAMETER,
+                    CIRCLE_DIAMETER);
+        });
 	}
 
 	private class updateTask extends TimerTask {
@@ -294,9 +322,7 @@ class drawWindow extends JPanel implements MouseListener {
 
 				writer.println(exportString);
 				writer.close();
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (UnsupportedEncodingException e) {
+			} catch (FileNotFoundException | UnsupportedEncodingException e) {
 				e.printStackTrace();
 			}
 		}
