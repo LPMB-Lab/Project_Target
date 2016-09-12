@@ -8,7 +8,7 @@ public class mainWindow extends JFrame {
 	}
 
 	mainWindow() {
-		setTitle("Project Target");
+		setTitle("Target Accuracy Task");
 		add(new drawWindow());
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
