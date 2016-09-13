@@ -27,3 +27,7 @@ hs_err_pid*
 
 # IntelliJ
 /out/
+
+.idea/artifacts/TargetAccuracyTask_jar.xml
+
+.idea/misc.xml
